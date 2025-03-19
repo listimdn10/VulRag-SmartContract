@@ -1,0 +1,87 @@
+SC06:2025  Unchecked External Calls
+Description:
+Example (Vulnerable contract):
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.4.24;
+
+contract Solidity_UncheckedExternalCall {
+    address public owner;
+
+    constructor() public {
+        owner = msg.sender;
+    }
+
+    function forward(address callee, bytes _data) public {
+        require(callee.delegatecall(_data));
+    }
+}
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.4.24;
+
+contract Solidity_UncheckedExternalCall {
+    address public owner;
+
+    constructor() public {
+        owner = msg.sender;
+    }
+
+    function forward(address callee, bytes _data) public {
+        require(callee.delegatecall(_data));
+    }
+}
+
+Impact:
+
+Unchecked external calls can result in failed transactions, causing the intended operations to not be completed successfully. This can lead to the loss of funds, as the contract may proceed under the false assumption that the transfer was successful. Additionally, it can create an incorrect contract state, making the contract vulnerable to further exploits and inconsistencies in its logic.
+
+Unchecked external calls can result in failed transactions, causing the intended operations to not be completed successfully. This can lead to the loss of funds, as the contract may proceed under the false assumption that the transfer was successful. Additionally, it can create an incorrect contract state, making the contract vulnerable to further exploits and inconsistencies in its logic.
+Remediation:
+
+Whenever possible, use transfer() instead of send(), as transfer() reverts the transaction if the external call fails.
+Always check the return value of send() or call() functions to ensure proper handling if they return false.
+
+Whenever possible, use transfer() instead of send(), as transfer() reverts the transaction if the external call fails.
+Always check the return value of send() or call() functions to ensure proper handling if they return false.
+Example (Fixed version):
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0; 
+
+contract Solidity_UncheckedExternalCall {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function forward(address callee, bytes memory _data) public {
+        // Ensure that delegatecall succeeds
+        (bool success, ) = callee.delegatecall(_data);
+        require(success, "Delegatecall failed");  // Check the return value to handle failure
+    }
+}
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0; 
+
+contract Solidity_UncheckedExternalCall {
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function forward(address callee, bytes memory _data) public {
+        // Ensure that delegatecall succeeds
+        (bool success, ) = callee.delegatecall(_data);
+        require(success, "Delegatecall failed");  // Check the return value to handle failure
+    }
+}
+
+Examples of Smart Contracts That Fell Victim to Unchecked External Call Attacks:
+
+Punk Protocol Hack : A Comprehensive Hack Analysis
+
+Punk Protocol Hack : A Comprehensive Hack Analysis
+Punk Protocol Hack
+Hack Analysis

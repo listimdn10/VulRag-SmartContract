@@ -1,0 +1,8 @@
+{
+    "id": "SWC-100",
+    "description": [
+        "Functions that do not have a function visibility type specified arepublicby default. This can lead to a vulnerability if a developer forgot to set the visibility and a malicious user is able to make unauthorized or unintended state changes."
+    ],
+    "visibility_not_set.sol": "/*\n * @source: https://github.com/sigp/solidity-security-blog#visibility\n * @author: SigmaPrime\n * Modified by Gerhard Wagner\n */\n\npragma solidity ^0.4.24;\n\ncontract HashForEther {\n\n function withdrawWinnings() {\n \n require(uint32(msg.sender) == 0);\n _sendWinnings();\n }\n\n function _sendWinnings() {\n msg.sender.transfer(this.balance);\n }\n}\n",
+    "visibility_not_set_fixed.sol": "/*\n * @source: https://github.com/sigp/solidity-security-blog#visibility\n * @author: SigmaPrime\n * Modified by Gerhard Wagner\n */\n\npragma solidity ^0.4.24;\n\ncontract HashForEther {\n\n function withdrawWinnings() public {\n \n require(uint32(msg.sender) == 0);\n _sendWinnings();\n }\n\n function _sendWinnings() internal{\n msg.sender.transfer(this.balance);\n }\n}\n"
+}
