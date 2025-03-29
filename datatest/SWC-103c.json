@@ -1,8 +1,0 @@
-{
-    "id": "SWC-103",
-    "description": [
-        "Contracts should be deployed with the same compiler version and flags that they have been tested with thoroughly. Locking the pragma helps to ensure that contracts do not accidentally get deployed using, for example, an outdated compiler version that might introduce bugs that affect the contract system negatively."
-    ],
-    "no_pragma.sol": "contract PragmaNotLocked {\n uint public x = 1;\n}\n",
-    "no_pragma_fixed.sol": "pragma solidity ^0.8.20;\n\ncontract PragmaLocked {\n    uint public x = 1;\n}\n"
-}

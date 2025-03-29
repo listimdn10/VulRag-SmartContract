@@ -1,8 +1,0 @@
-{
-    "id": "SWC-131",
-    "description": [
-        "Unused variables are allowed in Solidity and they do not pose a direct security issue. It is best practice though to avoid them as they can:"
-    ],
-    "unused_state_variables.sol": "pragma solidity >=0.5.0;\npragma experimental ABIEncoderV2;\n\nimport \"./base.sol\";\n\ncontract DerivedA is Base {\n \n A i = A(1);\n\n int internal j = 500;\n\n function call(int a) public {\n assign1(a);\n }\n\n function assign3(A memory x) public returns (uint) {\n return g[1] + x.a + uint(j);\n }\n\n function ret() public returns (int){\n return this.e();\n\n }\n\n}\n",
-    "unused_state_variables_fixed.sol": "pragma solidity >=0.5.0;\npragma experimental ABIEncoderV2;\n\nimport \"./base_fixed.sol\";\n\ncontract DerivedA is Base {\n\n int internal j = 500;\n\n function call(int a) public {\n assign1(a);\n }\n\n function assign3(A memory x) public returns (uint) {\n return g[1] + x.a + uint(j);\n }\n\n function ret() public returns (int){\n return this.e();\n\n }\n\n}\n"
-}

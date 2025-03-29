@@ -1,9 +1,0 @@
-{
-    "id": "SWC-110",
-    "description": [
-        "The Solidity assert() function is meant to assert invariants. Properly functioning code should never reach a failing assert statement. A reachable assertion can mean one of two things:"
-    ],
-    "two_mapppings.sol": "pragma solidity ^0.4.22;\n\ncontract TwoMappings{\n\n mapping(uint=>uint) m;\n mapping(uint=>uint) n;\n\n constructor(){\n m[10] = 100;\n }\n\n function check(uint a){\n assert(n[a] == 0);\n }\n\n}\n",
-    "two_mappings_fixec.sol": "pragma solidity ^0.4.22;\n\ncontract TwoMappings {\n\n    mapping(uint => uint) m;\n    mapping(uint => uint) n;\n\n    constructor() public {\n        m[10] = 100;\n    }\n\n    function check(uint a) public {\n        require(n[a] == 0, \"Condition failed\");\n    }\n}"
-
-}

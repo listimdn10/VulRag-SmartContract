@@ -1,9 +1,0 @@
-{
-    "id": "SWC-119",
-    "description": [
-        "Solidity allows for ambiguous naming of state variables when inheritance is used. ContractAwith a variablexcould inherit contractBthat also has a state variablexdefined. This would result in two separate versions ofx, one of them being accessed from contractAand the other one from contractB. In more complex contract systems this condition could go unnoticed and subsequently lead to security issues.",
-        "Shadowing state variables can also occur within a single contract when there are multiple definitions on the contract and function level."
-    ],
-    "ShadowingInFunctions.sol": "pragma solidity 0.4.24;\n\ncontract ShadowingInFunctions {\n uint n = 2;\n uint x = 3;\n\n function test1() constant returns (uint n) {\n return n; \n }\n\n function test2() constant returns (uint n) {\n n = 1;\n return n; \n }\n\n function test3() constant returns (uint x) {\n uint n = 4;\n return n+x; \n }\n}\n",
-    "ShadowingInFunctions_fixed.sol": "pragma solidity 0.4.24;\n\ncontract ShadowingInFunctions {\n    uint public n = 2; // State variable\n    uint public x = 3; // State variable\n\n    // Đổi tên biến trả về để tránh trùng với biến trạng thái\n    function test1() public view returns (uint result) {\n        return n; // Trả về biến trạng thái n\n    }\n\n    // Đổi tên biến trả về để tránh trùng với biến trạng thái\n    function test2() public view returns (uint result) {\n        result = 1; // Sử dụng biến cục bộ result thay vì n\n        return result;\n    }\n\n    // Đổi tên biến cục bộ để tránh trùng với biến trạng thái\n    function test3() public view returns (uint result) {\n        uint localN = 4; // Đổi tên biến cục bộ để tránh trùng với n\n        return localN + x; // Sử dụng biến trạng thái x\n    }\n}\n"
-}

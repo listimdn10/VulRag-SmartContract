@@ -1,9 +1,0 @@
-{
-    "id": "SWC-119",
-    "description": [
-        "Solidity allows for ambiguous naming of state variables when inheritance is used. ContractAwith a variablexcould inherit contractBthat also has a state variablexdefined. This would result in two separate versions ofx, one of them being accessed from contractAand the other one from contractB. In more complex contract systems this condition could go unnoticed and subsequently lead to security issues.",
-        "Shadowing state variables can also occur within a single contract when there are multiple definitions on the contract and function level."
-    ],
-    "TokenSale.sol": "pragma solidity 0.4.24;\n\ncontract Tokensale {\n uint hardcap = 10000 ether;\n\n function Tokensale() {}\n\n function fetchCap() public constant returns(uint) {\n return hardcap;\n }\n}\n\ncontract Presale is Tokensale {\n uint hardcap = 1000 ether;\n\n function Presale() Tokensale() {}\n}\n",
-    "TokenSale_fixed.sol": "pragma solidity 0.4.25;\n\n\n\ncontract Tokensale {\n uint public hardcap = 10000 ether;\n\n function Tokensale() {}\n\n function fetchCap() public constant returns(uint) {\n return hardcap;\n }\n}\n\ncontract Presale is Tokensale {\n \n \n function Presale() Tokensale() {\n hardcap = 1000 ether; \n }\n}\n"
-}

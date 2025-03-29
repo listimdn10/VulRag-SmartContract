@@ -1,9 +1,0 @@
-{
-    "id": "SWC-105",
-    "description": [
-        "Due to missing or insufficient access controls, malicious parties can withdraw some or all Ether from the contract account.",
-        "This bug is sometimes caused by unintentionally exposing initialization functions. By wrongly naming a function intended to be a constructor, the constructor code ends up in the runtime byte code and can be called by anyone to re-initialize the contract."
-    ],
-    "simple_ether_drain.sol": "pragma solidity ^0.4.22;\n\ncontract SimpleEtherDrain {\n\n function withdrawAllAnyone() {\n msg.sender.transfer(this.balance);\n }\n\n function () public payable {\n }\n\n}\n",
-    "simple_ether_drain_fixed.sol": "pragma solidity ^0.4.22;\n\ncontract SimpleEtherDrain {\n address private owner;\n\n constructor() public {\n owner = msg.sender;\n }\n\n modifier onlyOwner() {\n require(msg.sender == owner);\n _;\n }\n\n function withdrawAll() public onlyOwner {\n owner.transfer(address(this).balance);\n }\n\n function() public payable {}\n}\n"
-}

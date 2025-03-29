@@ -1,9 +1,0 @@
-{
-    "id": "SWC-110",
-    "description": [
-        "The Solidityassert()function is meant to assert invariants. Properly functioning code should never reach a failing assert statement. A reachable assertion can mean one of two things:"
-    ],
-    "constructor_create_modifiable.sol": "/*\n * @source: ChainSecurity\n * @author: Anton Permenev\n * Assert violation with 2 message calls:\n * - B.set_x(X): X != 10\n * - ContructorCreateModifiable.check()\n */\n\npragma solidity ^0.4.22;\n\ncontract ContructorCreateModifiable{\n B b = new B(10);\n\n function check(){\n assert(b.foo() == 10);\n }\n\n}\n\ncontract B{\n\n uint x_;\n constructor(uint x){\n x_ = x;\n }\n\n function foo() returns(uint){\n return x_;\n }\n\n function set_x(uint x){\n x_ = x;\n }\n}\n",
-    "constructor_create_modifiable_fixed.sol": "/*\n * @source: ChainSecurity\n * @author: Anton Permenev\n * Fixed version: assert() replaced with require()\n */\n\npragma solidity ^0.4.22;\n\ncontract ContructorCreateModifiable {\n B b = new B(10);\n\n function check() public {\n require(b.foo() == 10, \"Value mismatch!\");\n }\n}\n\ncontract B {\n uint x_;\n constructor(uint x) public {\n x_ = x;\n }\n\n function foo() public returns(uint) {\n return x_;\n }\n\n function set_x(uint x) public {\n x_ = x;\n }\n}\n"
-
-}

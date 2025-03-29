@@ -1,0 +1,21 @@
+This is a code snippet with
+a vulnerability [CVE ID]: [Vulnerable Code] The vulnerability is
+described as follows:[CVE Description] The correct way to fix it is by
+[Patch Diff] The code after modification is as follows: [Patched
+Code] Why is the above modification necessary?
+
+
+This is a code snippet with a vulnerability {SWC_id}: 
+    [source code Solidity]
+    {vul_solidity_code}
+    
+    The vulnerability is described as follows: {SWC_description},
+    and this is how the control flow of the code is described in Slither:
+    {dot_content}
+    
+    The code after modification is as follows:
+    [Patched Code]
+    {fixed_solidity_code}, 
+and this is how the control flow of the fixed code is describe in Slither: 
+ 	{dot_content}
+Why is the above modification necessary?

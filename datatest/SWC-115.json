@@ -1,8 +1,0 @@
-{
-    "id": "SWC-115",
-    "description": [
-        "tx.originis a global variable in Solidity which returns the address of the account that sent the transaction. Using the variable for authorization could make a contract vulnerable if an authorized account calls into a malicious contract. A call could be made to the vulnerable contract that passes the authorization check sincetx.originreturns the original sender of the transaction which in this case is the authorized account."
-    ],
-    "mycontract.sol": "/*\n * @source: https://consensys.github.io/smart-contract-best-practices/recommendations/#avoid-using-txorigin\n * @author: Consensys Diligence  \n * Modified by Gerhard Wagner\n */\n\npragma solidity 0.4.24;\n\ncontract MyContract {\n\n address owner;\n\n function MyContract() public {\n owner = msg.sender;\n }\n\n function sendTo(address receiver, uint amount) public {\n require(tx.origin == owner);\n receiver.transfer(amount);\n }\n\n}\n",
-    "mycontract_fixed.sol": "/*\n * @source: https://consensys.github.io/smart-contract-best-practices/recommendations/#avoid-using-txorigin\n * @author: Consensys Diligence\n * Modified by Gerhard Wagner\n */\n\npragma solidity 0.4.25;\n\ncontract MyContract {\n\n address owner;\n\n function MyContract() public {\n owner = msg.sender;\n }\n\n function sendTo(address receiver, uint amount) public {\n require(msg.sender == owner);\n receiver.transfer(amount);\n }\n\n}\n"
-}

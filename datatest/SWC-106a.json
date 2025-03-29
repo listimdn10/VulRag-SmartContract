@@ -1,8 +1,0 @@
-{
-    "id": "SWC-106",
-    "description": [
-        "Due to missing or insufficient access controls, malicious parties can self-destruct the contract."
-    ],
-    "suicide_multitx_feasible.sol": "pragma solidity ^0.4.23;\n\ncontract SuicideMultiTxFeasible {\n uint256 private initialized = 0;\n uint256 public count = 1;\n\n function init() public {\n initialized = 1;\n }\n\n function run(uint256 input) {\n if (initialized == 0) {\n return;\n }\n\n selfdestruct(msg.sender);\n }\n}\n",
-    "suicide_multitx_infeasible.sol": "pragma solidity ^0.4.23;\n\ncontract SuicideMultiTxFeasible {\n uint256 private initialized = 0;\n uint256 public count = 1;\n\n function init() public {\n initialized = 1;\n }\n\n function run(uint256 input) {\n if (initialized != 2) {\n return;\n }\n\n selfdestruct(msg.sender);\n }\n}\n"
-}

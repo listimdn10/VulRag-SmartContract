@@ -1,0 +1,340 @@
+digraph CFG {
+}
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(stage == Stage.Distribution,wrong stage)
+
+IRs:
+REF_24(OddEven.Stage) -> Stage.Distribution
+TMP_21(bool) = stage == REF_24
+TMP_22(None) = SOLIDITY_CALL require(bool,string)(TMP_21,wrong stage)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+n = players[0].number + players[1].number
+
+IRs:
+REF_25(OddEven.Player) -> players[0]
+REF_26(uint256) -> REF_25.number
+REF_27(OddEven.Player) -> players[1]
+REF_28(uint256) -> REF_27.number
+TMP_23(uint256) = REF_26 + REF_28
+n(uint256) := TMP_23(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+players[n % 2].addr.call.value(3000000000000000000)()
+
+IRs:
+TMP_24(uint256) = n % 2
+REF_29(OddEven.Player) -> players[TMP_24]
+REF_30(address) -> REF_29.addr
+TUPLE_0(bool,bytes) = LOW_LEVEL_CALL, dest:REF_30, function:call, arguments:[''] value:3000000000000000000 "];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+players[(n + 1) % 2].addr.call.value(1000000000000000000)()
+
+IRs:
+TMP_26(uint256) = n + 1
+TMP_27(uint256) = TMP_26 % 2
+REF_33(OddEven.Player) -> players[TMP_27]
+REF_34(address) -> REF_33.addr
+TUPLE_1(bool,bytes) = LOW_LEVEL_CALL, dest:REF_34, function:call, arguments:[''] value:1000000000000000000 "];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+delete players
+
+IRs:
+players = delete players "];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+stage = Stage.FirstCommit
+
+IRs:
+REF_37(OddEven.Stage) -> Stage.FirstCommit
+stage(OddEven.Stage) := REF_37(OddEven.Stage)"];
+}
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+stage == Stage.FirstCommit
+
+IRs:
+REF_0(OddEven.Stage) -> Stage.FirstCommit
+TMP_0(bool) = stage == REF_0
+CONDITION TMP_0"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+playerIndex = 0
+
+IRs:
+playerIndex(uint256) := 0(uint256)"];
+3->8;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+stage == Stage.SecondCommit
+
+IRs:
+REF_1(OddEven.Stage) -> Stage.SecondCommit
+TMP_1(bool) = stage == REF_1
+CONDITION TMP_1"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+playerIndex = 1
+
+IRs:
+playerIndex(uint256) := 1(uint256)"];
+5->7;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+revert(string)(only two players allowed)
+
+IRs:
+TMP_2(None) = SOLIDITY_CALL revert(string)(only two players allowed)"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+require(bool,string)(msg.value == 2000000000000000000,msg.value must be 2 eth)
+
+IRs:
+TMP_3(bool) = msg.value == 2000000000000000000
+TMP_4(None) = SOLIDITY_CALL require(bool,string)(TMP_3,msg.value must be 2 eth)"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+players[playerIndex] = Player(msg.sender,commitment,false,0)
+
+IRs:
+REF_2(OddEven.Player) -> players[playerIndex]
+TMP_5(OddEven.Player) = new Player(msg.sender,commitment,False,0)
+REF_2(OddEven.Player) (->players) := TMP_5(OddEven.Player)"];
+10->11;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+stage == Stage.FirstCommit
+
+IRs:
+REF_3(OddEven.Stage) -> Stage.FirstCommit
+TMP_6(bool) = stage == REF_3
+CONDITION TMP_6"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+stage = Stage.SecondCommit
+
+IRs:
+REF_4(OddEven.Stage) -> Stage.SecondCommit
+stage(OddEven.Stage) := REF_4(OddEven.Stage)"];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+stage = Stage.FirstReveal
+
+IRs:
+REF_5(OddEven.Stage) -> Stage.FirstReveal
+stage(OddEven.Stage) := REF_5(OddEven.Stage)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+}
+digraph{
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(stage == Stage.FirstReveal || stage == Stage.SecondReveal,wrong stage)
+
+IRs:
+REF_6(OddEven.Stage) -> Stage.FirstReveal
+TMP_7(bool) = stage == REF_6
+REF_7(OddEven.Stage) -> Stage.SecondReveal
+TMP_8(bool) = stage == REF_7
+TMP_9(bool) = TMP_7 || TMP_8
+TMP_10(None) = SOLIDITY_CALL require(bool,string)(TMP_9,wrong stage)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+players[0].addr == msg.sender
+
+IRs:
+REF_8(OddEven.Player) -> players[0]
+REF_9(address) -> REF_8.addr
+TMP_11(bool) = REF_9 == msg.sender
+CONDITION TMP_11"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+playerIndex = 0
+
+IRs:
+playerIndex(uint256) := 0(uint256)"];
+4->9;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+players[1].addr == msg.sender
+
+IRs:
+REF_10(OddEven.Player) -> players[1]
+REF_11(address) -> REF_10.addr
+TMP_12(bool) = REF_11 == msg.sender
+CONDITION TMP_12"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+playerIndex = 1
+
+IRs:
+playerIndex(uint256) := 1(uint256)"];
+6->8;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+revert(string)(unknown player)
+
+IRs:
+TMP_13(None) = SOLIDITY_CALL revert(string)(unknown player)"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+require(bool,string)(! players[playerIndex].revealed,already revealed)
+
+IRs:
+REF_12(OddEven.Player) -> players[playerIndex]
+REF_13(bool) -> REF_12.revealed
+TMP_14 = UnaryType.BANG REF_13 
+TMP_15(None) = SOLIDITY_CALL require(bool,string)(TMP_14,already revealed)"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool,string)(keccak256(bytes)(abi.encodePacked(msg.sender,number,blindingFactor)) == players[playerIndex].commitment,invalid hash)
+
+IRs:
+TMP_16(bytes) = SOLIDITY_CALL abi.encodePacked()(msg.sender,number,blindingFactor)
+TMP_17(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_16)
+REF_15(OddEven.Player) -> players[playerIndex]
+REF_16(bytes32) -> REF_15.commitment
+TMP_18(bool) = TMP_17 == REF_16
+TMP_19(None) = SOLIDITY_CALL require(bool,string)(TMP_18,invalid hash)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+players[playerIndex].number = number
+
+IRs:
+REF_17(OddEven.Player) -> players[playerIndex]
+REF_18(uint256) -> REF_17.number
+REF_18(uint256) (->players) := number(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+players[playerIndex].revealed = true
+
+IRs:
+REF_19(OddEven.Player) -> players[playerIndex]
+REF_20(bool) -> REF_19.revealed
+REF_20(bool) (->players) := True(bool)"];
+13->14;
+14[label="Node Type: IF 14
+
+EXPRESSION:
+stage == Stage.FirstReveal
+
+IRs:
+REF_21(OddEven.Stage) -> Stage.FirstReveal
+TMP_20(bool) = stage == REF_21
+CONDITION TMP_20"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+stage = Stage.SecondReveal
+
+IRs:
+REF_22(OddEven.Stage) -> Stage.SecondReveal
+stage(OddEven.Stage) := REF_22(OddEven.Stage)"];
+15->17;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+stage = Stage.Distribution
+
+IRs:
+REF_23(OddEven.Stage) -> Stage.Distribution
+stage(OddEven.Stage) := REF_23(OddEven.Stage)"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+}
+digraph{
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+stage = Stage.FirstCommit
+
+IRs:
+REF_38(OddEven.Stage) -> Stage.FirstCommit
+stage(OddEven.Stage) := REF_38(OddEven.Stage)"];
+}
+}
