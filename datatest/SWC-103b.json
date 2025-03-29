@@ -1,0 +1,8 @@
+{
+    "id": "SWC-103",
+    "description": [
+        "Contracts should be deployed with the same compiler version and flags that they have been tested with thoroughly. Locking the pragma helps to ensure that contracts do not accidentally get deployed using, for example, an outdated compiler version that might introduce bugs that affect the contract system negatively."
+    ],
+    "semver_floating_pragma.sol": "pragma solidity >=0.4.0 < 0.6.0;\npragma solidity >=0.4.0<0.6.0;\npragma solidity >=0.4.14 <0.6.0;\npragma solidity >0.4.13 <0.6.0;\npragma solidity 0.4.24 - 0.5.2;\npragma solidity >=0.4.24 <=0.5.3 ~0.4.20;\npragma solidity <0.4.26;\npragma solidity ~0.4.20;\npragma solidity ^0.4.14;\npragma solidity 0.4.*;\npragma solidity 0.*;\npragma solidity *;\npragma solidity 0.4;\npragma solidity 0;\n\ncontract SemVerFloatingPragma {\n}\n",
+    "semver_floating_pragma_fixed.sol": "pragma solidity 0.4.25;\n\npragma solidity =0.4.25;\n\ncontract SemVerFloatingPragmaFixed {\n}\n"
+}

@@ -1,0 +1,9 @@
+{
+    "id": "SWC-135",
+    "description": [
+        "In Solidity, it's possible to write code that does not produce the intended effects. Currently, the solidity compiler will not return a warning for effect-free code. This can lead to the introduction of \"dead\" code that does not properly perform an intended action.",
+        "For example, it's easy to miss the trailing parentheses inmsg.sender.call.value(address(this).balance)(\"\");, which could lead to a function proceeding without transferring funds tomsg.sender. Although, this should be avoided bychecking the return value of the call."
+    ],
+    "deposit_box.sol": "pragma solidity ^0.5.0;\n\ncontract DepositBox {\n mapping(address => uint) balance;\n\n \n function deposit(uint amount) public payable {\n require(msg.value == amount, 'incorrect amount');\n \n balance[msg.sender] == amount;\n }\n}\n",
+    "deposit_box_fixed.sol": "pragma solidity ^0.5.0;\n\ncontract DepositBox {\n mapping(address => uint) balance;\n\n \n function deposit(uint amount) public payable {\n require(msg.value == amount, 'incorrect amount');\n \n balance[msg.sender] = amount;\n }\n}\n"
+}

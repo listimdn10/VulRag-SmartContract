@@ -1,0 +1,8 @@
+{
+    "id": "SWC-121",
+    "description": [
+        "It is sometimes necessary to perform signature verification in smart contracts to achieve better usability or to save gas cost. A secure implementation needs to protect against Signature Replay Attacks by for example keeping track of all processed message hashes and only allowing new message hashes to be processed. A malicious user could attack a contract without such a control and get message hash that was sent by another user processed multiple times."
+    ],
+    "swc-121.sol": "pragma solidity ^0.8.0;\n\ncontract SignatureReplay {\n    address public owner;\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    function verifySignature(bytes32 messageHash, uint8 v, bytes32 r, bytes32 s) public view returns (bool) {\n        address signer = ecrecover(messageHash, v, r, s);\n        return signer == owner;\n    }\n}",
+    "swc-121_fixed.sol": "pragma solidity ^0.8.0;\n\ncontract SignatureReplay {\n    address public owner;\n    mapping(bytes32 => bool) public usedHashes;\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    function verifySignature(bytes32 messageHash, uint8 v, bytes32 r, bytes32 s) public returns (bool) {\n        require(!usedHashes[messageHash], \"Replay attack detected!\");\n        bytes32 prefixedHash = keccak256(abi.encodePacked(address(this), messageHash));\n        address signer = ecrecover(prefixedHash, v, r, s);\n        if (signer == owner) {\n            usedHashes[messageHash] = true;\n            return true;\n        }\n        return false;\n    }\n}"
+}

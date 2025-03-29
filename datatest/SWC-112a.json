@@ -1,0 +1,9 @@
+{
+    "id": "SWC-112",
+    "description": [
+        "There exists a special variant of a message call, nameddelegatecallwhich is identical to a message call apart from the fact that the code at the target address is executed in the context of the calling contract andmsg.senderandmsg.valuedo not change their values. This allows a smart contract to dynamically load code from a different address at runtime. Storage, current address and balance still refer to the calling contract.",
+        "Calling into untrusted contracts is very dangerous, as the code at the target address can change any storage values of the caller and has full control over the caller's balance."
+    ],
+    "proxy.sol": "pragma solidity ^0.4.24;\n\ncontract Proxy {\n\n address owner;\n\n constructor() public {\n owner = msg.sender; \n }\n\n function forward(address callee, bytes _data) public {\n require(callee.delegatecall(_data));\n }\n\n}\n",
+    "proxy_fixed.sol": "pragma solidity ^0.4.24;\n\ncontract Proxy {\n\n address callee;\n address owner;\n\n modifier onlyOwner {\n require(msg.sender == owner);\n _;\n }\n\n constructor() public {\n callee = address(0x0);\n owner = msg.sender;\n }\n\n function setCallee(address newCallee) public onlyOwner {\n callee = newCallee;\n }\n\n function forward(bytes _data) public {\n require(callee.delegatecall(_data));\n }\n\n}\n"
+}

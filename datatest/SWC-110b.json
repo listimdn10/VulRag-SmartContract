@@ -1,0 +1,9 @@
+{
+    "id": "SWC-110",
+    "description": [
+        "The Solidity assert() function is meant to assert invariants. Properly functioning code shouldneverreach a failing assert statement. A reachable assertion can mean one of two things:"
+    ],
+    "assert_constructor.sol": "/*\n * @source: https://github.com/ConsenSys/evm-analyzer-benchmark-suite\n * @author: Suhabe Bugrara\n */\n\npragma solidity ^0.4.19;\n\ncontract AssertConstructor {\n function AssertConstructor() public {\n assert(false);\n }\n}\n",
+    "assert_constructor_fixed.sol": "pragma solidity ^0.4.19;\n\ncontract AssertConstructor {\n    function AssertConstructor() public {\n        require(false);\n    }\n}"
+    
+}

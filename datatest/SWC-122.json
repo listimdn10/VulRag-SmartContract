@@ -1,0 +1,10 @@
+{
+    "id": "SWC-122",
+    "description": [
+        "It is a common pattern for smart contract systems to allow users to sign messages off-chain instead of directly requesting users to do an on-chain transaction because of the flexibility and increased transferability that this provides.",
+        "Smart contract systems that process signed messages have to implement their own logic to recover the authenticity from the signed messages before they process them further.",
+        "Some signature verification implementations assume the validity of a signed message based on msg.sender, which can lead to vulnerabilities when proxies are used to relay transactions."
+    ],
+    "swc_122.sol": "pragma solidity ^0.8.0;\n\ncontract SecureContract {\n    mapping(address => bool) public authorizedUsers;\n\n    function verifySignature(address user) public {\n        require(user == msg.sender, \"Unauthorized user\");\n        authorizedUsers[user] = true;\n    }\n}",
+    "swc_122_fixed.sol": "pragma solidity ^0.8.0;\n\ncontract SecureContract {\n    mapping(address => bool) public authorizedUsers;\n\n    function verifySignature(bytes32 hash, bytes memory signature) public {\n        address signer = recoverSigner(hash, signature);\n        require(signer != address(0), \"Invalid signature\");\n        authorizedUsers[signer] = true;\n    }\n\n    function recoverSigner(bytes32 hash, bytes memory signature) internal pure returns (address) {\n        require(signature.length == 65, \"Invalid signature length\");\n\n        bytes32 r;\n        bytes32 s;\n        uint8 v;\n\n        assembly {\n            r := mload(add(signature, 32))\n            s := mload(add(signature, 64))\n            v := byte(0, mload(add(signature, 96)))\n        }\n\n        if (v < 27) {\n            v += 27;\n        }\n\n        require(v == 27 || v == 28, \"Invalid signature version\");\n\n        return ecrecover(hash, v, r, s);\n    }\n}"
+}

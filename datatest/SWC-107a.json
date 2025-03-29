@@ -5,6 +5,4 @@
     ],
     "modifier_reentrancy.sol": "pragma solidity ^0.5.0;\n\ncontract ModifierEntrancy {\n\n mapping (address => uint) public tokenBalance;\n string constant name = \"Nu Token\";\n Bank bank;\n\n constructor() public{\n bank = new Bank();\n }\n\n \n function airDrop() hasNoBalance supportsToken public{\n tokenBalance[msg.sender] += 20;\n }\n\n \n modifier supportsToken() {\n require(keccak256(abi.encodePacked(\"Nu Token\")) == bank.supportsToken());\n _;\n }\n\n \n modifier hasNoBalance {\n require(tokenBalance[msg.sender] == 0);\n _;\n }\n}\n\ncontract Bank{\n\n function supportsToken() external returns(bytes32) {\n return keccak256(abi.encodePacked(\"Nu Token\"));\n }\n\n}\n",
     "modifier_reentrancy_fixed.sol": "pragma solidity ^0.5.0;\n\ncontract ModifierEntrancy {\n mapping (address => uint) public tokenBalance;\n string constant name = \"Nu Token\";\n Bank bank;\n constructor() public{\n bank = new Bank();\n }\n\n \n function airDrop() supportsToken hasNoBalance public{ \n tokenBalance[msg.sender] += 20;\n }\n\n \n modifier supportsToken() {\n require(keccak256(abi.encodePacked(\"Nu Token\")) == bank.supportsToken());\n _;\n }\n \n modifier hasNoBalance {\n require(tokenBalance[msg.sender] == 0);\n _;\n }\n}\n\ncontract Bank{\n\n function supportsToken() external returns(bytes32){\n return(keccak256(abi.encodePacked(\"Nu Token\")));\n }\n}\n"
-    }
-
-
+}

@@ -1,0 +1,8 @@
+{
+    "id": "SWC-107",
+    "description": [
+        "One of the major dangers of calling external contracts is that they can take over the control flow. In the reentrancy attack (a.k.a. recursive call attack), a malicious contract calls back into the calling contract before the first invocation of the function is finished. This may cause the different invocations of the function to interact in undesirable ways."
+    ],
+    "simple_dao.sol": "/*\n * @source: http://blockchain.unica.it/projects/ethereum-survey/attacks.html#simpledao\n * @author: Atzei N., Bartoletti M., Cimoli T\n * Modified by Josselin Feist\n */\npragma solidity 0.4.24;\n\ncontract SimpleDAO {\n mapping (address => uint) public credit;\n\n function donate(address to) payable public{\n credit[to] += msg.value;\n }\n\n function withdraw(uint amount) public{\n if (credit[msg.sender]>= amount) {\n require(msg.sender.call.value(amount)());\n credit[msg.sender]-=amount;\n }\n } \n\n function queryCredit(address to) view public returns(uint){\n return credit[to];\n }\n}\n",
+    "simple_dao_fixed.sol": "/*\n * @source: http://blockchain.unica.it/projects/ethereum-survey/attacks.html#simpledao\n * @author: Atzei N., Bartoletti M., Cimoli T\n * Modified by Bernhard Mueller, Josselin Feist\n */\npragma solidity 0.4.24;\n\ncontract SimpleDAO {\n mapping (address => uint) public credit;\n\n function donate(address to) payable public{\n credit[to] += msg.value;\n }\n\n function withdraw(uint amount) public {\n if (credit[msg.sender]>= amount) {\n credit[msg.sender]-=amount;\n require(msg.sender.call.value(amount)());\n }\n } \n\n function queryCredit(address to) view public returns (uint){\n return credit[to];\n }\n}\n"
+}
