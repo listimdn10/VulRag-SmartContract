@@ -7,7 +7,7 @@ import glob
 import os
 from openai import OpenAI
 # Cấu hình OpenAI API Key
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = ""
 client = OpenAI()
 
 # Đường dẫn tới thư mục chứa các file JSON
