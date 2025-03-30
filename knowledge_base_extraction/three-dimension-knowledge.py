@@ -54,6 +54,8 @@ def install_and_use_solc(version):
     except subprocess.CalledProcessError as e:
         print(f"❌ Lỗi khi cài đặt solc {version}:\n{e}")
 
+
+merged_dot_file = ""
 def move_dot_files(sol_file, file_dir):
     """
     Di chuyển tất cả các file .dot vào thư mục dot_files/<tên của file sol>/
@@ -68,8 +70,10 @@ def move_dot_files(sol_file, file_dir):
             target_path = os.path.join(dot_folder, file)
             shutil.move(source_path, target_path)
             print(f"📁 Đã di chuyển {file} vào {dot_folder}/")
-    merge_dot_files(sol_base_name)  # Gọi hàm hợp nhất sau khi di chuyển file .dot
-
+    # merge_dot_files(sol_base_name)  # Gọi hàm hợp nhất sau khi di chuyển file .dot
+    merged_dot_file = merge_dot_files(sol_base_name)
+    print("đây là merge_dot_file được in ra trong hàm move:", merged_dot_file)
+    return merged_dot_file
 
 def run_slither(sol_file, file_dir):
     """
@@ -90,9 +94,10 @@ def run_slither(sol_file, file_dir):
             f.write(result.stdout)
 
         print("📁 Output đã được lưu vào cfg_output.txt")
-        move_dot_files(sol_file, file_dir)  # Di chuyển file .dot vào thư mục tương ứng
+        merged_dot_file = move_dot_files(sol_file, file_dir)  # Di chuyển file .dot vào thư mục tương ứng
     except subprocess.CalledProcessError as e:
         print(f"❌ Lỗi khi chạy Slither:\n{e.stderr}")
+    return merged_dot_file
 
 def merge_dot_files(sol_file_name):
     """
@@ -135,6 +140,7 @@ def merge_dot_files(sol_file_name):
             os.remove(dot_file)
 
     print(f"✅ Hợp nhất hoàn tất! Đã tạo {merged_dot_file}.")
+    return merged_dot_file
     
 
 import os
@@ -204,31 +210,65 @@ def analyze_funtional_sematics_with_gpt(sol_file_path, json_filename_no_ext):
     except Exception as e:
         print(f"❌ Lỗi khi gọi OpenAI API: {e}")
 
-def analyze_causes_and_solutions_gpt(dot_file_path): #cần truyền vào swc id, description, dot vul_file, source vul_code, source fixed_code, dot fixed_file
+def analyze_causes_and_solutions_gpt(swc_id, description, dot_file_path, fixed_dot_file_path, sol_file_path, fixed_sol_file_path): #cần truyền vào swc id, description, dot vul_file, source vul_code, source fixed_code, dot fixed_file
         """Gửi nội dung file .dot đến OpenAI GPT-3.5 để phân tích"""
+        print(swc_id)
+        print(dot_file_path)
+        print(fixed_dot_file_path)
+        print(sol_file_path)
+        print(fixed_sol_file_path)
         if not os.path.exists(dot_file_path):
             print(f"⚠️ Không tìm thấy file {dot_file_path}")
             return
+        
+        if not os.path.exists(fixed_dot_file_path):
+            print(f"⚠️ Không tìm thấy file {fixed_dot_file_path}")
+            return
 
+       
+        
+        if not os.path.exists(sol_file_path):
+            print(f"⚠️ Không tìm thấy file {sol_file_path}")
+            return
+        
+        if not os.path.exists(fixed_sol_file_path):
+            print(f"⚠️ Không tìm thấy file {fixed_sol_file_path}")
+            return
+        
         with open(dot_file_path, "r", encoding="utf-8") as file:
             dot_content = file.read()
-    # Khúc này dự kiến câu prompt cần có cả .dot và code solidity 
+        with open(fixed_dot_file_path, "r", encoding="utf-8") as file:
+            fixed_dot_content = file.read()
+        with open(sol_file_path, "r", encoding="utf-8") as file:
+            sol_content = file.read()
+        with open(fixed_sol_file_path, "r", encoding="utf-8") as file:
+            fixed_sol_content = file.read()
+
+    # Khúc này dự kiến câu prompt cần có cả .dot và code solidity
+    # Khúc này cho ra được detailed vulnerabilitiy and solution và các knowledge base vul khác, cần abstraction để ra dược như trong bài báo, thì mỗi swc có 1 lỗi và 1 cách fix thôi 
         prompt = f"""
-    This is a code snippet with
-    a vulnerability {SWC_id}: [Vulnerable Code] The vulnerability is
-    described as follows: {SWC_description} 
-    The code after modification is as follows: [Patched
-    Code] Why is the above modification necessary? 
+        This is a code snippet with a vulnerability {swc_id}: 
+        {sol_content}
+        
+        The vulnerability is described as follows: {description},
+        and this is how the control flow of the vulnerable code is described in Slither:
+        {dot_content}
+        
+        The code after modification is as follows:
+        {fixed_sol_content}, 
+        and this is how the control flow of the fixed code is describe in Slither: 
+        {fixed_dot_content}
+        Why is the above modification necessary?
 
-
-    I want you to act as a vulnerability detection expert and organize 
-    vulnerability knowledge based on the above vulnerability repair information. 
-    Please summarize the generalizable specific behavior of the code that leads to the 
-    vulnerability and the specific solution to fix it. Format your findings in JSON.
-    Here are some examples to guide you on the level of detail expected
-    in your extraction: 
-    [Vulnerability Causes and Fixing Solution Example 1]
-    [Vulnerability Causes and Fixing Solution Example 2]
+        Then, I want you to act as a 
+        vulnerability detection expert and organize vulnerability knowledge based
+        on the above vulnerability repair information. Please summarize the
+        generalizable specific behavior of the code that leads to the vulnera-
+        bility and the specific solution to fix it. 
+        Here are some examples to guide you on the level of detail expected
+        in your extraction: 
+        "Detailed Vulnerability Description: "
+        "Solution Description: "
                     """
 
         try:
@@ -245,7 +285,7 @@ def analyze_causes_and_solutions_gpt(dot_file_path): #cần truyền vào swc id
 
             )
             answer = completion.choices[0].message.content
-            print(f"\n📄 ANALYZE THE {dot_file_path}:\n{answer}")
+            print(f"\n📄 ANALYZE THE CAUSES AND SOLUTIONS:\n{answer}")
 
         except Exception as e:
             print(f"❌ Lỗi khi gọi OpenAI API: {e}")
@@ -293,7 +333,7 @@ if __name__ == "__main__":
                 fixed_solc_version = get_solidity_version(fixed_sol_file_path)
                 if fixed_solc_version:
                     install_and_use_solc(fixed_solc_version)
-                    run_slither(fixed_sol_file_path, fixed_sol_file_dir)
+                    merged_dot_file_fixed = run_slither(fixed_sol_file_path, fixed_sol_file_dir)
                 else:
                     print(f"⚠️ Không tìm thấy phiên bản Solidity trong {fixed_sol_file_path}")
                     
@@ -316,11 +356,13 @@ if __name__ == "__main__":
                     install_and_use_solc(solc_version)
                     merged_dot_file = run_slither(sol_file_path, sol_files_dir)
                     # print("đây là sol_file_path:", sol_file_path)
-                    # print("đây là merge_dot_file:" , merged_dot_file)
                 else:
                     print(f"⚠️ Không tìm thấy phiên bản Solidity trong {sol_file_path}")
-            
-        print(sol_file_path)
+        print("CÁC FILES QUAN TRỌNG: 1-source code vul.sol, 2-source code fixed.sol, 3-file dot của vul.sol, 4-file dot của fixed.sol")    
+        print("1-source code vul.sol: ", sol_file_path)
+        print("2-source code fixed.sol", fixed_sol_file_path)
+        print("3-đây là merge_dot_file:" , merged_dot_file)
+        print("4-đây là merge_dot_file_fixed:" , merged_dot_file_fixed)
         # Gọi GPT-3.5 phân tích file .dot hợp nhất
-        analyze_funtional_sematics_with_gpt(sol_file_path, json_filename_no_ext)
-        print(fixed_sol_file_path)
+        # analyze_funtional_sematics_with_gpt(sol_file_path, json_filename_no_ext)
+        analyze_causes_and_solutions_gpt(SWC_id, SWC_description, merged_dot_file, merged_dot_file_fixed, sol_file_path, fixed_sol_file_path)
