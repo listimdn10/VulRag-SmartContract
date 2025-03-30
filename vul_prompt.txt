@@ -16,6 +16,6 @@ This is a code snippet with a vulnerability {SWC_id}:
     The code after modification is as follows:
     [Patched Code]
     {fixed_solidity_code}, 
-and this is how the control flow of the fixed code is describe in Slither: 
+	and this is how the control flow of the fixed code is describe in Slither: 
  	{dot_content}
 Why is the above modification necessary?

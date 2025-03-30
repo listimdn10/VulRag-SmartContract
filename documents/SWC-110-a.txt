@@ -1,0 +1,32 @@
+/*
+ * @source: https://github.com/ConsenSys/evm-analyzer-benchmark-suite
+ * @author: Suhabe Bugrara
+ */
+
+pragma solidity ^0.4.19;
+
+contract AssertMultiTx2 {
+ uint256 private param;
+
+ function AssertMultiTx2(uint256 _param) public {
+ param = 0;
+ }
+
+ function run() {
+ assert(param > 0);
+ }
+
+ function set(uint256 _param) {
+ param = _param;
+ }
+
+
+}
+
+
+Abstract purpose: The code snippet defines a Solidity smart contract with a parameter and functions to run and set the parameter value.
+
+Detail Behaviors:
+1. Constructor function to initialize the parameter value to 0.
+2. run function that asserts the parameter value is greater than 0.
+3. set function to update the parameter value.

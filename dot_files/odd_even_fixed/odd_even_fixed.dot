@@ -1,6 +1,4 @@
 digraph CFG {
-}
-digraph{
 0[label="Node Type: ENTRY_POINT 0
 "];
 0->1;
@@ -66,8 +64,6 @@ stage = Stage.FirstCommit
 IRs:
 REF_37(OddEven.Stage) -> Stage.FirstCommit
 stage(OddEven.Stage) := REF_37(OddEven.Stage)"];
-}
-digraph{
 0[label="Node Type: ENTRY_POINT 0
 "];
 0->1;
@@ -176,8 +172,6 @@ stage(OddEven.Stage) := REF_5(OddEven.Stage)"];
 13->14;
 14[label="Node Type: END_IF 14
 "];
-}
-digraph{
 0[label="Node Type: ENTRY_POINT 0
 "];
 0->1;
@@ -326,8 +320,6 @@ stage(OddEven.Stage) := REF_23(OddEven.Stage)"];
 16->17;
 17[label="Node Type: END_IF 17
 "];
-}
-digraph{
 0[label="Node Type: OTHER_ENTRYPOINT 0
 
 EXPRESSION:
@@ -336,5 +328,4 @@ stage = Stage.FirstCommit
 IRs:
 REF_38(OddEven.Stage) -> Stage.FirstCommit
 stage(OddEven.Stage) := REF_38(OddEven.Stage)"];
-}
 }

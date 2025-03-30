@@ -117,14 +117,17 @@ def merge_dot_files(sol_file_name):
     merged_dot_file = os.path.join(subdir_path, f"{sol_file_name}.dot")
 
     with open(merged_dot_file, "w") as outfile:
-        outfile.write("digraph CFG {\n")
+        outfile.write("digraph CFG {\n")  # Chỉ ghi phần mở đầu một lần
+
         for dot_file in dot_files:
             with open(dot_file, "r") as infile:
                 for line in infile:
-                    if not line.startswith("digraph CFG") and line.strip() != "}":
-                        outfile.write(line)
-            outfile.write("}\n")
-        outfile.write("}\n")
+                    # Loại bỏ dòng bắt đầu bằng "digraph" hoặc chỉ có dấu "}"
+                    if line.startswith("digraph") or line.strip() == "}":
+                        continue
+                    outfile.write(line)  # Ghi nội dung của các node
+        
+        outfile.write("}\n")  # Chỉ ghi dấu đóng một lần ở cuối
 
     # Xóa các file .dot cũ, chỉ giữ lại file hợp nhất
     for dot_file in dot_files:
@@ -133,33 +136,68 @@ def merge_dot_files(sol_file_name):
 
     print(f"✅ Hợp nhất hoàn tất! Đã tạo {merged_dot_file}.")
     
-# Gọi GPT-3.5 phân tích file .dot hợp nhất
-    # analyze_funtional_sematics_with_gpt(merged_dot_file)
 
-def analyze_funtional_sematics_with_gpt(dot_file_path):
-    """Gửi nội dung file .dot đến OpenAI GPT-3.5 để phân tích"""
-    if not os.path.exists(dot_file_path):
-        print(f"⚠️ Không tìm thấy file {dot_file_path}")
+import os
+import re
+import string
+
+def save_analysis_result(swcid, answer, solidity_content):
+    """
+    Lưu kết quả phân tích vào thư mục Documents/{SWC_id}.
+    Nếu SWC_id đã tồn tại, thêm hậu tố -a, -b, -c để tránh trùng lặp.
+    """
+    base_dir = os.path.join(os.getcwd(), "documents")  # Thư mục hiện tại/documents
+    os.makedirs(base_dir, exist_ok=True)  # Tạo thư mục nếu chưa có    
+    sanitized_swcid = re.sub(r'[^\w\-]', '_', swcid)  # Xóa ký tự đặc biệt
+
+    target_file = os.path.join(base_dir, f"{sanitized_swcid}.txt")
+
+    
+    # Nếu file đã tồn tại, thêm hậu tố -a, -b, -c...
+    
+    suffix_index = 0
+    while os.path.exists(target_file):
+        suffix_index += 1
+        suffix = f"-{string.ascii_lowercase[suffix_index-1]}"  # a, b, c...
+        target_file = os.path.join(base_dir, f"{sanitized_swcid}{suffix}.txt")
+
+
+
+        # Lưu nội dung file Solidity và kết quả GPT
+    with open(target_file, "w", encoding="utf-8") as f:
+        f.write(solidity_content)
+        f.write("\n\n")  # Ngăn cách nội dung Solidity và GPT
+        f.write(answer)
+
+    
+    print(f"✅ Kết quả đã được lưu tại: {target_file}")
+
+
+
+def analyze_funtional_sematics_with_gpt(sol_file_path, swc_id):
+    """Gửi nội dung file Solidity đến OpenAI GPT-3.5 để phân tích"""
+    if not os.path.exists(sol_file_path):
+        print(f"⚠️ Không tìm thấy file {sol_file_path}")
         return
 
-    with open(dot_file_path, "r", encoding="utf-8") as file:
-        dot_content = file.read()
+    with open(sol_file_path, "r", encoding="utf-8") as sol_file:
+        solidity_content = sol_file.read()
 
     prompt = f"""
-What is the purpose of the above .dot file content? Please 
-summarize the answer in one sentence with the following format:
-“Function purpose:”. 
+        What is the purpose of the above code snippet? Please 
+        summarize the answer in one sentence with the following format:
+        “Abstract purpose:”. 
 
-Please summarize the functions of the above .dot file extracted by Slither in the list
-format without any other explanation: “The functions of the above .dot file extracted by Slither are: 1. 2. 3...” 
+        Please summarize the functions of the above code snippet in the list
+        format without any other explanation: “Detail Behaviors: 1. 2. 3...” 
 
-Here is the .dot file content:
-{dot_content}
+        Here is the file content:
+        {solidity_content}
                 """
 
     try:
         completion = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "developer", "content": "You are a specialist in Smart Contract analysing, talk like an expert in Smart Contract"},
                 {
@@ -168,59 +206,59 @@ Here is the .dot file content:
 
                 }, 
             ],
-
         )
         answer = completion.choices[0].message.content
-        print(f"\n📄 ANALYZE THE {dot_file_path}:\n{answer}")
+        print(f"\n📄 ANALYZE THE {solidity_content}:\n{answer}")
+        save_analysis_result(swc_id,answer, solidity_content)
 
     except Exception as e:
         print(f"❌ Lỗi khi gọi OpenAI API: {e}")
 
 def analyze_dot_file_with_gpt(dot_file_path):
-                    """Gửi nội dung file .dot đến OpenAI GPT-3.5 để phân tích"""
-                    if not os.path.exists(dot_file_path):
-                        print(f"⚠️ Không tìm thấy file {dot_file_path}")
-                        return
+        """Gửi nội dung file .dot đến OpenAI GPT-3.5 để phân tích"""
+        if not os.path.exists(dot_file_path):
+            print(f"⚠️ Không tìm thấy file {dot_file_path}")
+            return
 
-                    with open(dot_file_path, "r", encoding="utf-8") as file:
-                        dot_content = file.read()
-                # Khúc này dự kiến câu prompt cần có cả .dot và code solidity 
-                    prompt = f"""
-                This is a code snippet with
-                a vulnerability {SWC_id}: [Vulnerable Code] The vulnerability is
-                described as follows: {SWC_description} 
-                The code after modification is as follows: [Patched
-                Code] Why is the above modification necessary? 
+        with open(dot_file_path, "r", encoding="utf-8") as file:
+            dot_content = file.read()
+    # Khúc này dự kiến câu prompt cần có cả .dot và code solidity 
+        prompt = f"""
+    This is a code snippet with
+    a vulnerability {SWC_id}: [Vulnerable Code] The vulnerability is
+    described as follows: {SWC_description} 
+    The code after modification is as follows: [Patched
+    Code] Why is the above modification necessary? 
 
 
-                I want you to act as a vulnerability detection expert and organize 
-                vulnerability knowledge based on the above vulnerability repair information. 
-                Please summarize the generalizable specific behavior of the code that leads to the 
-                vulnerability and the specific solution to fix it. Format your findings in JSON.
-                Here are some examples to guide you on the level of detail expected
-                in your extraction: 
-                [Vulnerability Causes and Fixing Solution Example 1] 
-                [Vulnerability Causes and Fixing Solution Example 2]
-                                """
+    I want you to act as a vulnerability detection expert and organize 
+    vulnerability knowledge based on the above vulnerability repair information. 
+    Please summarize the generalizable specific behavior of the code that leads to the 
+    vulnerability and the specific solution to fix it. Format your findings in JSON.
+    Here are some examples to guide you on the level of detail expected
+    in your extraction: 
+    [Vulnerability Causes and Fixing Solution Example 1] 
+    [Vulnerability Causes and Fixing Solution Example 2]
+                    """
 
-                    try:
-                        completion = client.chat.completions.create(
-                            model="gpt-4o",
-                            messages=[
-                                {"role": "developer", "content": "You are a specialist in Smart Contract analysing, talk like an expert in Smart Contract"},
-                                {
-                                    "role": "user",
-                                    "content": prompt,
+        try:
+            completion = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "developer", "content": "You are a specialist in Smart Contract analysing, talk like an expert in Smart Contract"},
+                    {
+                        "role": "user",
+                        "content": prompt,
 
-                                }, 
-                            ],
+                    }, 
+                ],
 
-                        )
-                        answer = completion.choices[0].message.content
-                        print(f"\n📄 ANALYZE THE {dot_file_path}:\n{answer}")
+            )
+            answer = completion.choices[0].message.content
+            print(f"\n📄 ANALYZE THE {dot_file_path}:\n{answer}")
 
-                    except Exception as e:
-                        print(f"❌ Lỗi khi gọi OpenAI API: {e}")
+        except Exception as e:
+            print(f"❌ Lỗi khi gọi OpenAI API: {e}")
 
 if __name__ == "__main__":
 #main
@@ -288,14 +326,12 @@ if __name__ == "__main__":
                     install_and_use_solc(solc_version)
                     merged_dot_file = run_slither(sol_file_path, sol_files_dir)
                     # analyze_funtional_sematics_with_gpt(merged_dot_file, sol_file_path)
-                    print("đây là sol_file_path:", sol_file_path)
-                    print("đây là merge_dot_file:" , merged_dot_file)
+                    # print("đây là sol_file_path:", sol_file_path)
+                    # print("đây là merge_dot_file:" , merged_dot_file)
                 else:
                     print(f"⚠️ Không tìm thấy phiên bản Solidity trong {sol_file_path}")
             
-                
-
-
-
-        
-    
+        print(sol_file_path)
+        # Gọi GPT-3.5 phân tích file .dot hợp nhất
+        analyze_funtional_sematics_with_gpt(sol_file_path, SWC_id)
+        print(fixed_sol_file_path)
