@@ -24,9 +24,9 @@ contract AssertMultiTx2 {
 }
 
 
-Abstract purpose: The code snippet defines a Solidity smart contract with a parameter and functions to run and set the parameter value.
+Abstract purpose: The code snippet defines a Solidity smart contract called AssertMultiTx2 with functions to initialize a parameter, run a check, and set a new parameter value.
 
 Detail Behaviors:
-1. Constructor function to initialize the parameter value to 0.
-2. run function that asserts the parameter value is greater than 0.
-3. set function to update the parameter value.
+1. Initialize the parameter value to 0 in the constructor.
+2. Run a check that asserts the parameter is greater than 0.
+3. Set a new value for the parameter.

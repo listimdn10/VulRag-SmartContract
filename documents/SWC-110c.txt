@@ -1,0 +1,21 @@
+/*
+ * @source: https://github.com/ConsenSys/evm-analyzer-benchmark-suite
+ * @author: Suhabe Bugrara
+ */
+
+pragma solidity ^0.4.19;
+
+contract AssertMinimal {
+ function run() public {
+ assert(false);
+ }
+}
+
+
+Abstract purpose:
+This code snippet is aiming to demonstrate the usage of the assert function in a simple Solidity smart contract.
+
+Detail Behaviors:
+1. Defines a Solidity contract named AssertMinimal.
+2. Contains a function named run that is accessible publicly.
+3. Inside the run function, an assert statement is used to trigger an error condition intentionally.

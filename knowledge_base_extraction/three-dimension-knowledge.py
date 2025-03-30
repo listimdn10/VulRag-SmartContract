@@ -141,26 +141,16 @@ import os
 import re
 import string
 
-def save_analysis_result(swcid, answer, solidity_content):
+def save_analysis_result(json_filename_no_ext, answer, solidity_content):
     """
-    Lưu kết quả phân tích vào thư mục Documents/{SWC_id}.
-    Nếu SWC_id đã tồn tại, thêm hậu tố -a, -b, -c để tránh trùng lặp.
+    Lưu kết quả phân tích vào thư mục Documents/{ten_json.txt}.
+    Nếu file .txt đã tồn tại, thêm hậu tố -a, -b, -c để tránh trùng lặp.
     """
     base_dir = os.path.join(os.getcwd(), "documents")  # Thư mục hiện tại/documents
     os.makedirs(base_dir, exist_ok=True)  # Tạo thư mục nếu chưa có    
-    sanitized_swcid = re.sub(r'[^\w\-]', '_', swcid)  # Xóa ký tự đặc biệt
+    sanitized_swcid = re.sub(r'[^\w\-]', '_', json_filename_no_ext)  # Xóa ký tự đặc biệt
 
     target_file = os.path.join(base_dir, f"{sanitized_swcid}.txt")
-
-    
-    # Nếu file đã tồn tại, thêm hậu tố -a, -b, -c...
-    
-    suffix_index = 0
-    while os.path.exists(target_file):
-        suffix_index += 1
-        suffix = f"-{string.ascii_lowercase[suffix_index-1]}"  # a, b, c...
-        target_file = os.path.join(base_dir, f"{sanitized_swcid}{suffix}.txt")
-
 
 
         # Lưu nội dung file Solidity và kết quả GPT
@@ -174,7 +164,7 @@ def save_analysis_result(swcid, answer, solidity_content):
 
 
 
-def analyze_funtional_sematics_with_gpt(sol_file_path, swc_id):
+def analyze_funtional_sematics_with_gpt(sol_file_path, json_filename_no_ext):
     """Gửi nội dung file Solidity đến OpenAI GPT-3.5 để phân tích"""
     if not os.path.exists(sol_file_path):
         print(f"⚠️ Không tìm thấy file {sol_file_path}")
@@ -209,12 +199,12 @@ def analyze_funtional_sematics_with_gpt(sol_file_path, swc_id):
         )
         answer = completion.choices[0].message.content
         print(f"\n📄 ANALYZE THE {solidity_content}:\n{answer}")
-        save_analysis_result(swc_id,answer, solidity_content)
+        save_analysis_result(json_filename_no_ext, answer, solidity_content)
 
     except Exception as e:
         print(f"❌ Lỗi khi gọi OpenAI API: {e}")
 
-def analyze_dot_file_with_gpt(dot_file_path):
+def analyze_causes_and_solutions_gpt(dot_file_path): #cần truyền vào swc id, description, dot vul_file, source vul_code, source fixed_code, dot fixed_file
         """Gửi nội dung file .dot đến OpenAI GPT-3.5 để phân tích"""
         if not os.path.exists(dot_file_path):
             print(f"⚠️ Không tìm thấy file {dot_file_path}")
@@ -237,7 +227,7 @@ def analyze_dot_file_with_gpt(dot_file_path):
     vulnerability and the specific solution to fix it. Format your findings in JSON.
     Here are some examples to guide you on the level of detail expected
     in your extraction: 
-    [Vulnerability Causes and Fixing Solution Example 1] 
+    [Vulnerability Causes and Fixing Solution Example 1]
     [Vulnerability Causes and Fixing Solution Example 2]
                     """
 
@@ -266,7 +256,7 @@ if __name__ == "__main__":
 #duyệt qua từng file json trong dataset
     for json_file in test_files:
         json_path = os.path.join(json_dir, json_file)
-        
+        json_filename_no_ext = os.path.splitext(json_file)[0]  # lấy tên file json k có extension
         # Đọc nội dung file JSON
         with open(json_path, 'r', encoding='utf-8') as f:
             try:
@@ -325,7 +315,6 @@ if __name__ == "__main__":
                 if solc_version:
                     install_and_use_solc(solc_version)
                     merged_dot_file = run_slither(sol_file_path, sol_files_dir)
-                    # analyze_funtional_sematics_with_gpt(merged_dot_file, sol_file_path)
                     # print("đây là sol_file_path:", sol_file_path)
                     # print("đây là merge_dot_file:" , merged_dot_file)
                 else:
@@ -333,5 +322,5 @@ if __name__ == "__main__":
             
         print(sol_file_path)
         # Gọi GPT-3.5 phân tích file .dot hợp nhất
-        analyze_funtional_sematics_with_gpt(sol_file_path, SWC_id)
+        analyze_funtional_sematics_with_gpt(sol_file_path, json_filename_no_ext)
         print(fixed_sol_file_path)
