@@ -147,10 +147,14 @@ import os
 import re
 import string
 
-def save_analysis_result(json_filename_no_ext, answer, solidity_content):
+def save_analysis_result(json_filename_no_ext, answer, solidity_content, mode="w"):
     """
+
     Lưu kết quả phân tích vào thư mục Documents/{ten_json.txt}.
-    Nếu file .txt đã tồn tại, thêm hậu tố -a, -b, -c để tránh trùng lặp.
+    Nếu mode = "w" -> Ghi đè (cho analyze_funtional_sematics_with_gpt).
+    Nếu mode = "a" -> Ghi thêm (cho abstraction).
+  
+    Lưu kết quả phân tích vào thư mục Documents/{ten_json.txt}.
     """
     base_dir = os.path.join(os.getcwd(), "documents")  # Thư mục hiện tại/documents
     os.makedirs(base_dir, exist_ok=True)  # Tạo thư mục nếu chưa có    
@@ -160,11 +164,22 @@ def save_analysis_result(json_filename_no_ext, answer, solidity_content):
 
 
         # Lưu nội dung file Solidity và kết quả GPT
-    with open(target_file, "w", encoding="utf-8") as f:
-        f.write(solidity_content)
-        f.write("\n\n")  # Ngăn cách nội dung Solidity và GPT
-        f.write(answer)
+    # with open(target_file, "w", encoding="utf-8") as f:
+    #     f.write(solidity_content)
+    #     f.write("\n\n")  # Ngăn cách nội dung Solidity và GPT
+    #     f.write(answer)
 
+    with open(target_file, mode, encoding="utf-8") as f:
+        if mode == "w":  # Ghi cho vulnerable code
+            f.write("vulnerable code:\n")
+            f.write(solidity_content)
+            f.write("\n\n")  # Ngăn cách nội dung Solidity và GPT
+        elif mode == "a":  # Ghi cho fixed code
+            f.write("\n\nfixed code:\n")
+            f.write(solidity_content)
+            f.write("\n\n")
+
+        f.write(answer)
     
     print(f"✅ Kết quả đã được lưu tại: {target_file}")
 
@@ -204,13 +219,13 @@ def analyze_funtional_sematics_with_gpt(sol_file_path, json_filename_no_ext):
             ],
         )
         answer = completion.choices[0].message.content
-        print(f"\n📄 ANALYZE THE {solidity_content}:\n{answer}")
-        save_analysis_result(json_filename_no_ext, answer, solidity_content)
+        # print(f"\n📄 ANALYZE THE {solidity_content}:\n{answer}")
+        save_analysis_result(json_filename_no_ext, answer, solidity_content, mode="w")
 
     except Exception as e:
         print(f"❌ Lỗi khi gọi OpenAI API: {e}")
 
-def analyze_causes_and_solutions_gpt(swc_id, description, dot_file_path, fixed_dot_file_path, sol_file_path, fixed_sol_file_path): #cần truyền vào swc id, description, dot vul_file, source vul_code, source fixed_code, dot fixed_file
+def analyze_causes_and_solutions_gpt(json_filename_no_ext, swc_id, description, dot_file_path, fixed_dot_file_path, sol_file_path, fixed_sol_file_path): #cần truyền vào swc id, description, dot vul_file, source vul_code, source fixed_code, dot fixed_file
         """Gửi nội dung file .dot đến OpenAI GPT-3.5 để phân tích"""
         print(swc_id)
         print(dot_file_path)
@@ -285,10 +300,97 @@ def analyze_causes_and_solutions_gpt(swc_id, description, dot_file_path, fixed_d
 
             )
             answer = completion.choices[0].message.content
-            print(f"\n📄 ANALYZE THE CAUSES AND SOLUTIONS:\n{answer}")
+            # print(f"\n📄 ANALYZE THE CAUSES AND SOLUTIONS:\n{answer}")
+            abstraction(answer, json_filename_no_ext, fixed_sol_content)
 
         except Exception as e:
             print(f"❌ Lỗi khi gọi OpenAI API: {e}")
+        return answer
+import textwrap
+
+def abstraction(answer, json_filename_no_ext, fixed_sol_content): 
+    # Trích xuất mô tả lỗ hổng (tìm cụm từ "Vulnerability Description" không cần `###`)
+    vuln_match = re.search(r"(?:Vulnerability Description|Detailed Vulnerability Description)\s*:\s*(.*?)(?:Solution|Fix|Mitigation|$)", answer, re.DOTALL | re.IGNORECASE)
+    detailed_vuln = vuln_match.group(1).strip() if vuln_match else "Not found"
+
+    # Trích xuất mô tả giải pháp (tìm cụm từ "Solution" hoặc "Fix" không cần `***`)
+    solution_match = re.search(r"(?:Solution|Solution Description)\s*:\s*(.*)", answer, re.DOTALL | re.IGNORECASE)
+    solution = solution_match.group(1).strip() if solution_match else "Not found"
+
+    """
+    Gửi nội dung phân tích lỗ hổng (answer) đến GPT-3.5 để trừu tượng hóa và tổng quát hóa thông tin.
+    Trích xuất:
+    1. abstract_vuln: Mô tả lỗi tổng quát
+    2. trigger_action: Hành động kích hoạt lỗi
+    3. detailed_vulnerability_description: Trích xuất từ analyze_causes_and_solutions_gpt
+    4. solution_description: Trích xuất từ analyze_causes_and_solutions_gpt
+    """
+
+    prompt = f"""
+    Given the extracted vulnerability knowledge from Solidity smart contracts, your task is to abstract and generalize this knowledge 
+    to enhance its applicability across different smart contract implementations. Please follow these guidelines and examples provided:
+
+    **Guidelines for Abstraction:**
+    - **Abstracting Method Invocations:** The extracted knowledge might contain concrete method invocations with detailed function calls 
+      (e.g., token.transfer(msg.sender, amount)), which can be abstracted into a generalized description 
+      (e.g., *"Performing an external token transfer to a user-controlled address."*).
+    - **Abstracting Variable Names and Types:** The extracted knowledge might contain concrete variable names or types 
+      (e.g., owner = msg.sender), which can be abstracted into a more general description 
+      (e.g., *"Assigning contract ownership to a deployer address."*).
+    - **Abstracting Solidity-Specific Constructs:** The extracted knowledge might contain Solidity-specific constructs 
+      (e.g., msg.sender == owner), which can be abstracted into a more general description 
+      (e.g., *"Enforcing access control by validating caller’s address."*).
+
+    ---
+    
+    **Task:**  
+    Based on the Extracted Vulnerability Knowledge below, provide:  
+    1️⃣ **Abstract Vulnerability Description**: A generalized version of the vulnerability.  
+    2️⃣ **Trigger Action**: The specific action that initiates the vulnerability.  
+    
+    ---
+    **Extracted Vulnerability Knowledge:**  
+    {answer}
+    
+    **Format Output as Plain Text:**
+    Abstract Vulnerability Description: <Your abstract vulnerability description here>
+    Trigger Action: <Your identified trigger action here>
+    """
+    try:
+        completion = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "developer", "content": "You are a specialist in Smart Contract analysing, talk like an expert in Smart Contract"},
+                {
+                    "role": "user",
+                    "content": prompt,
+
+                }, 
+            ],
+
+        )
+        gpt_output = completion.choices[0].message.content
+    
+
+        # Kết hợp kết quả với detailed_vuln và solution từ phân tích trước đó
+        final_output = f"""
+            {gpt_output}
+
+            Detailed Vulnerability Description: {detailed_vuln}
+            Solution Description: {solution}
+            """
+        final_output = textwrap.dedent(final_output).strip()
+        
+        save_analysis_result(json_filename_no_ext, final_output, fixed_sol_content, mode="a")
+
+        # return final_output
+
+    except Exception as e:
+        print(f"❌ Error calling OpenAI API: {e}")
+        return None
+
+
+
 
 if __name__ == "__main__":
 #main
@@ -364,5 +466,5 @@ if __name__ == "__main__":
         print("3-đây là merge_dot_file:" , merged_dot_file)
         print("4-đây là merge_dot_file_fixed:" , merged_dot_file_fixed)
         # Gọi GPT-3.5 phân tích file .dot hợp nhất
-        # analyze_funtional_sematics_with_gpt(sol_file_path, json_filename_no_ext)
-        analyze_causes_and_solutions_gpt(SWC_id, SWC_description, merged_dot_file, merged_dot_file_fixed, sol_file_path, fixed_sol_file_path)
+        analyze_funtional_sematics_with_gpt(sol_file_path, json_filename_no_ext)
+        analyze_causes_and_solutions_gpt(json_filename_no_ext, SWC_id, SWC_description, merged_dot_file, merged_dot_file_fixed, sol_file_path, fixed_sol_file_path)

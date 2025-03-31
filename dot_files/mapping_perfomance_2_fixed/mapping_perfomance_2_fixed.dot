@@ -1,0 +1,152 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+set(a0,cond0)
+
+IRs:
+INTERNAL_CALL, MappingPerformance2sets.set(bytes32,uint256)(a0,cond0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+set(a1,cond1)
+
+IRs:
+INTERNAL_CALL, MappingPerformance2sets.set(bytes32,uint256)(a1,cond1)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool,string)(m5[a] == 0,m5[a] is not zero!)
+
+IRs:
+REF_5(uint256) -> m5[a]
+TMP_7(bool) = REF_5 == 0
+TMP_8(None) = SOLIDITY_CALL require(bool,string)(TMP_7,m5[a] is not zero!)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+b = 10
+
+IRs:
+b(uint256) := 10(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+cond == 0
+
+IRs:
+TMP_0(bool) = cond == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+m0[a] = 5
+
+IRs:
+REF_0(uint256) -> m0[a]
+REF_0(uint256) (->m0) := 5(uint256)"];
+2->15;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+cond == 1
+
+IRs:
+TMP_1(bool) = cond == 1
+CONDITION TMP_1"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+m1[a] = 5
+
+IRs:
+REF_1(uint256) -> m1[a]
+REF_1(uint256) (->m1) := 5(uint256)"];
+4->14;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+cond == 2
+
+IRs:
+TMP_2(bool) = cond == 2
+CONDITION TMP_2"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+m2[a] = 5
+
+IRs:
+REF_2(uint256) -> m2[a]
+REF_2(uint256) (->m2) := 5(uint256)"];
+6->13;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+cond == 3
+
+IRs:
+TMP_3(bool) = cond == 3
+CONDITION TMP_3"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+m3[a] = 5
+
+IRs:
+REF_3(uint256) -> m3[a]
+REF_3(uint256) (->m3) := 5(uint256)"];
+8->12;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+cond == 4
+
+IRs:
+TMP_4(bool) = cond == 4
+CONDITION TMP_4"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+m4[a] = 5
+
+IRs:
+REF_4(uint256) -> m4[a]
+REF_4(uint256) (->m4) := 5(uint256)"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: END_IF 15
+"];
+}
