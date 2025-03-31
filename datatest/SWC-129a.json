@@ -1,0 +1,10 @@
+{
+    "id": "SWC-129",
+    "description": [
+        "A typographical error can occur for example when the intent of a defined operation is to sum a number to a variable (+=) but it has accidentally been defined in a wrong way (=+), introducing a typo which happens to be a valid operator. Instead of calculating the sum it initializes the variable again.",
+        "The unary + operator is deprecated in new solidity compiler versions."
+    ],
+    "typo_one_command.sol": "pragma solidity ^0.4.25;\n\ncontract TypoOneCommand {\n uint numberOne = 1;\n\n function alwaysOne() public {\n numberOne =+ 1;\n }\n}\n",
+    "typo_one_command_fixed.sol": "pragma solidity ^0.4.25;\n\ncontract TypoOneCommand {\n    uint numberOne = 1;\n\n    function alwaysOne() public {\n        numberOne += 1;\n    }\n}\n"
+
+}

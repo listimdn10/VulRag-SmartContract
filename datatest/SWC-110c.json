@@ -1,0 +1,8 @@
+{
+    "id": "SWC-110",
+    "description": [
+        "The Solidity assert() function is meant to assert invariants. Properly functioning code should never reach a failing assert statement. A reachable assertion can mean one of two things:"
+    ],
+    "assert_minimal.sol": "/*\n * @source: https://github.com/ConsenSys/evm-analyzer-benchmark-suite\n * @author: Suhabe Bugrara\n */\n\npragma solidity ^0.4.19;\n\ncontract AssertMinimal {\n function run() public {\n assert(false);\n }\n}\n",
+    "assert_minimal_fixed.sol": "pragma solidity ^0.4.19;\n\ncontract AssertMinimal {\n    function run() public {\n        require(false);\n    }\n}"
+}

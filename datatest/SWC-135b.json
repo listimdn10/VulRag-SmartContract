@@ -1,0 +1,9 @@
+{
+    "id": "SWC-135",
+    "description": [
+        "In Solidity, it's possible to write code that does not produce the intended effects. Currently, the solidity compiler will not return a warning for effect-free code. This can lead to the introduction of \"dead\" code that does not properly perform an intended action.",
+        "For example, it's easy to miss the trailing parentheses inmsg.sender.call.value(address(this).balance)(\"\");, which could lead to a function proceeding without transferring funds tomsg.sender. Although, this should be avoided bychecking the return value of the call."
+    ],
+    "wallet.sol": "/*\n * @author: Kaden Zipfel\n */\n\npragma solidity ^0.5.0;\n\ncontract Wallet {\n mapping(address => uint) balance;\n\n \n function deposit(uint amount) public payable {\n require(msg.value == amount, 'msg.value must be equal to amount');\n balance[msg.sender] = amount;\n }\n\n \n function withdraw(uint amount) public {\n require(amount <= balance[msg.sender], 'amount must be less than balance');\n\n uint previousBalance = balance[msg.sender];\n balance[msg.sender] = previousBalance - amount;\n\n \n msg.sender.call.value(amount);\n }\n}\n",
+    "wallet_fixed.sol": "/*\n * @author: Kaden Zipfel\n */\n\npragma solidity ^0.5.0;\n\ncontract Wallet {\n mapping(address => uint) balance;\n\n \n function deposit(uint amount) public payable {\n require(msg.value == amount, 'msg.value must be equal to amount');\n balance[msg.sender] = amount;\n }\n\n \n function withdraw(uint amount) public {\n require(amount <= balance[msg.sender], 'amount must be less than balance');\n\n uint previousBalance = balance[msg.sender];\n balance[msg.sender] = previousBalance - amount;\n\n \n (bool success, ) = msg.sender.call.value(amount)(\"\");\n require(success, 'transfer failed');\n }\n}\n"
+}

@@ -1,0 +1,8 @@
+{
+    "id": "SWC-124",
+    "description": [
+        "A smart contract's data (e.g., storing the owner of the contract) is persistently stored at some storage location (i.e., a key or address) on the EVM level. The contract is responsible for ensuring that only authorized user or contract accounts may write to sensitive storage locations. If an attacker is able to write to arbitrary storage locations of a contract, the authorization checks may easily be circumvented. This can allow an attacker to corrupt the storage; for instance, by overwriting a field that stores the address of the contract owner."
+    ],
+    "mapping_write.sol": "pragma solidity ^0.4.24;\n\n\n\ncontract Map {\n address public owner;\n uint256[] map;\n\n function set(uint256 key, uint256 value) public {\n if (map.length <= key) {\n map.length = key + 1;\n }\n\n map[key] = value;\n }\n\n function get(uint256 key) public view returns (uint256) {\n return map[key];\n }\n function withdraw() public{\n require(msg.sender == owner);\n msg.sender.transfer(address(this).balance);\n }\n}\n",
+    "mapping_write_fixed.sol": "pragma solidity ^0.4.24;\n\ncontract Map {\n    address public owner;\n    mapping(uint256 => uint256) private map;\n\n    modifier onlyOwner() {\n        require(msg.sender == owner, \"Not the contract owner\");\n        _;\n    }\n\n    constructor() public {\n        owner = msg.sender;\n    }\n\n    function set(uint256 key, uint256 value) public {\n        map[key] = value;\n    }\n\n    function get(uint256 key) public view returns (uint256) {\n        return map[key];\n    }\n\n    function withdraw() public onlyOwner {\n        msg.sender.transfer(address(this).balance);\n    }\n}\n"
+}

@@ -1,0 +1,9 @@
+{
+    "id": "SWC-105",
+    "description": [
+        "Due to missing or insufficient access controls, malicious parties can withdraw some or all Ether from the contract account.",
+        "This bug is sometimes caused by unintentionally exposing initialization functions. By wrongly naming a function intended to be a constructor, the constructor code ends up in the runtime byte code and can be called by anyone to re-initialize the contract."
+    ],
+    "wallet_04_confused_sign.sol": "pragma solidity ^0.4.24;\n\n/* User can add pay in and withdraw Ether.\n   Unfortunately, the developer was drunk and used the wrong comparison operator in \"withdraw()\"\n   Anybody can withdraw arbitrary amounts of Ether :()\n*/\n\ncontract Wallet {\n address creator;\n\n mapping(address => uint256) balances;\n\n constructor() public {\n creator = msg.sender;\n }\n\n function deposit() public payable {\n assert(balances[msg.sender] + msg.value > balances[msg.sender]);\n balances[msg.sender] += msg.value;\n }\n\n function withdraw(uint256 amount) public {\n require(amount >= balances[msg.sender]);\n msg.sender.transfer(amount);\n balances[msg.sender] -= amount;\n }\n\n \n\n function migrateTo(address to) public {\n require(creator == msg.sender);\n to.transfer(this.balance);\n }\n\n}\n",
+    "wallet_04_confused_sign_fixed.sol": "pragma solidity ^0.4.24;\n\ncontract Wallet {\n address creator;\n mapping(address => uint256) balances;\n\n constructor() public {\n creator = msg.sender;\n }\n\n function deposit() public payable {\n assert(balances[msg.sender] + msg.value > balances[msg.sender]);\n balances[msg.sender] += msg.value;\n }\n\n function withdraw(uint256 amount) public {\n require(amount <= balances[msg.sender]);\n msg.sender.transfer(amount);\n balances[msg.sender] -= amount;\n }\n\n function migrateTo(address to) public {\n require(creator == msg.sender);\n to.transfer(address(this).balance);\n }\n}\n"
+}
