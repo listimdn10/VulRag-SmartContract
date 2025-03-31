@@ -1,0 +1,69 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_1(bool) = a == 0
+CONDITION TMP_1"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_2(uint256) = a * b
+c(uint256) := TMP_2(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(c / a == b)
+
+IRs:
+TMP_3(uint256) = c / a
+TMP_4(bool) = TMP_3 == b
+TMP_5(None) = SOLIDITY_CALL require(bool)(TMP_4)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+count = mul(count,input)
+
+IRs:
+TMP_0(uint256) = INTERNAL_CALL, IntegerOverflowMul.mul(uint256,uint256)(count,input)
+count(uint256) := TMP_0(uint256)"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+count = 2
+
+IRs:
+count(uint256) := 2(uint256)"];
+}

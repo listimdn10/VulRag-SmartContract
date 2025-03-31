@@ -1,0 +1,560 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+participants.push(Participant(msg.sender,(msg.value * pyramidMultiplier) / 100))
+
+IRs:
+TMP_4(uint256) = msg.value * pyramidMultiplier
+TMP_5(uint256) = TMP_4 / 100
+TMP_6(Rubixi.Participant) = new Participant(msg.sender,TMP_5)
+REF_1 -> LENGTH participants
+TMP_8(uint256) := REF_1(uint256)
+TMP_9(uint256) = TMP_8 + 1
+REF_1(uint256) (->participants) := TMP_9(uint256)
+REF_2(Rubixi.Participant) -> participants[TMP_8]
+REF_2(Rubixi.Participant) (->participants) := TMP_6(Rubixi.Participant)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+participants.length == 10
+
+IRs:
+REF_3 -> LENGTH participants
+TMP_10(bool) = REF_3 == 10
+CONDITION TMP_10"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+pyramidMultiplier = 200
+
+IRs:
+pyramidMultiplier(uint256) := 200(uint256)"];
+3->7;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+participants.length == 25
+
+IRs:
+REF_4 -> LENGTH participants
+TMP_11(bool) = REF_4 == 25
+CONDITION TMP_11"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+pyramidMultiplier = 150
+
+IRs:
+pyramidMultiplier(uint256) := 150(uint256)"];
+5->6;
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+balance += (msg.value * (100 - _fee)) / 100
+
+IRs:
+TMP_12(uint256) = 100 - _fee
+TMP_13(uint256) = msg.value * TMP_12
+TMP_14(uint256) = TMP_13 / 100
+balance(uint256) = balance + TMP_14"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+collectedFees += (msg.value * _fee) / 100
+
+IRs:
+TMP_15(uint256) = msg.value * _fee
+TMP_16(uint256) = TMP_15 / 100
+collectedFees(uint256) = collectedFees + TMP_16"];
+9->10;
+10[label="Node Type: BEGIN_LOOP 10
+"];
+10->11;
+11[label="Node Type: IF_LOOP 11
+
+EXPRESSION:
+balance > participants[payoutOrder].payout
+
+IRs:
+REF_5(Rubixi.Participant) -> participants[payoutOrder]
+REF_6(uint256) -> REF_5.payout
+TMP_17(bool) = balance > REF_6
+CONDITION TMP_17"];
+11->12[label="True"];
+11->16[label="False"];
+12[label="Node Type: NEW VARIABLE 12
+
+EXPRESSION:
+payoutToSend = participants[payoutOrder].payout
+
+IRs:
+REF_7(Rubixi.Participant) -> participants[payoutOrder]
+REF_8(uint256) -> REF_7.payout
+payoutToSend(uint256) := REF_8(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+participants[payoutOrder].etherAddress.send(payoutToSend)
+
+IRs:
+REF_9(Rubixi.Participant) -> participants[payoutOrder]
+REF_10(address) -> REF_9.etherAddress
+TMP_18 = SEND dest:REF_10 value:payoutToSend"];
+13->14;
+14[label="Node Type: EXPRESSION 14
+
+EXPRESSION:
+balance -= participants[payoutOrder].payout
+
+IRs:
+REF_12(Rubixi.Participant) -> participants[payoutOrder]
+REF_13(uint256) -> REF_12.payout
+balance(uint256) = balance - REF_13"];
+14->15;
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+payoutOrder += 1
+
+IRs:
+payoutOrder(uint256) = payoutOrder + 1"];
+15->11;
+16[label="Node Type: END_LOOP 16
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_fee > 10
+
+IRs:
+TMP_43(bool) = _fee > 10
+CONDITION TMP_43"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_44(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+feePercent = _fee
+
+IRs:
+feePercent(uint256) := _fee(uint256)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, Rubixi.onlyowner()()"];
+5->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->5;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_mult > 300 || _mult < 120
+
+IRs:
+TMP_38(bool) = _mult > 300
+TMP_39(bool) = _mult < 120
+TMP_40(bool) = TMP_38 || TMP_39
+CONDITION TMP_40"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_41(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+pyramidMultiplier = _mult
+
+IRs:
+pyramidMultiplier(uint256) := _mult(uint256)"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, Rubixi.onlyowner()()"];
+5->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+creator = _owner
+
+IRs:
+creator(address) := _owner(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, Rubixi.onlyowner()()"];
+2->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->6;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+collectedFees == 0
+
+IRs:
+TMP_19(bool) = collectedFees == 0
+CONDITION TMP_19"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_20(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+creator.send(collectedFees)
+
+IRs:
+TMP_21 = SEND dest:creator value:collectedFees"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+collectedFees = 0
+
+IRs:
+collectedFees(uint256) := 0(uint256)"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, Rubixi.onlyowner()()"];
+6->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->10;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_amt *= 1000000000000000000
+
+IRs:
+_amt(uint256) = _amt * 1000000000000000000"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+_amt > collectedFees
+
+IRs:
+TMP_23(bool) = _amt > collectedFees
+CONDITION TMP_23"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+collectAllFees()
+
+IRs:
+INTERNAL_CALL, Rubixi.collectAllFees()()"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: IF 5
+
+EXPRESSION:
+collectedFees == 0
+
+IRs:
+TMP_25(bool) = collectedFees == 0
+CONDITION TMP_25"];
+5->6[label="True"];
+5->7[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_26(None) = SOLIDITY_CALL revert()()"];
+6->7;
+7[label="Node Type: END_IF 7
+"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+creator.send(_amt)
+
+IRs:
+TMP_27 = SEND dest:creator value:_amt"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+collectedFees -= _amt
+
+IRs:
+collectedFees(uint256) = collectedFees - _amt"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, Rubixi.onlyowner()()"];
+10->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+collectedFees == 0 || _pcent > 100
+
+IRs:
+TMP_29(bool) = collectedFees == 0
+TMP_30(bool) = _pcent > 100
+TMP_31(bool) = TMP_29 || TMP_30
+CONDITION TMP_31"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_32(None) = SOLIDITY_CALL revert()()"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+feesToCollect = collectedFees / 100 * _pcent
+
+IRs:
+TMP_33(uint256) = collectedFees / 100
+TMP_34(uint256) = TMP_33 * _pcent
+feesToCollect(uint256) := TMP_34(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+creator.send(feesToCollect)
+
+IRs:
+TMP_35 = SEND dest:creator value:feesToCollect"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+collectedFees -= feesToCollect
+
+IRs:
+collectedFees(uint256) = collectedFees - feesToCollect"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+onlyowner()
+
+IRs:
+MODIFIER_CALL, Rubixi.onlyowner()()"];
+7->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+creator = msg.sender
+
+IRs:
+creator(address) := msg.sender(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+init()
+
+IRs:
+INTERNAL_CALL, Rubixi.init()()"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.value < 1000000000000000000
+
+IRs:
+TMP_1(bool) = msg.value < 1000000000000000000
+CONDITION TMP_1"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+collectedFees += msg.value
+
+IRs:
+collectedFees(uint256) = collectedFees + msg.value"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+_fee = feePercent
+
+IRs:
+_fee(uint256) := feePercent(uint256)"];
+5->6;
+6[label="Node Type: IF 6
+
+EXPRESSION:
+msg.value >= 50000000000000000000
+
+IRs:
+TMP_2(bool) = msg.value >= 50000000000000000000
+CONDITION TMP_2"];
+6->7[label="True"];
+6->8[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+_fee /= 2
+
+IRs:
+_fee(uint256) = _fee / 2"];
+7->8;
+8[label="Node Type: END_IF 8
+"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+addPayout(_fee)
+
+IRs:
+INTERNAL_CALL, Rubixi.addPayout(uint256)(_fee)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+msg.sender == creator
+
+IRs:
+TMP_46(bool) = msg.sender == creator
+CONDITION TMP_46"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+balance = 0
+
+IRs:
+balance(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+collectedFees = 0
+
+IRs:
+collectedFees(uint256) := 0(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+feePercent = 10
+
+IRs:
+feePercent(uint256) := 10(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+pyramidMultiplier = 300
+
+IRs:
+pyramidMultiplier(uint256) := 300(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+payoutOrder = 0
+
+IRs:
+payoutOrder(uint256) := 0(uint256)"];
+}

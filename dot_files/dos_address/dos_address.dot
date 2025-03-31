@@ -1,0 +1,119 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->7;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < 350
+
+IRs:
+TMP_3(bool) = i < 350
+CONDITION TMP_3"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+creditorAddresses.push(msg.sender)
+
+IRs:
+REF_2 -> LENGTH creditorAddresses
+TMP_5(uint256) := REF_2(uint256)
+TMP_6(uint256) = TMP_5 + 1
+REF_2(uint256) (->creditorAddresses) := TMP_6(uint256)
+REF_3(address) -> creditorAddresses[TMP_5]
+REF_3(address) (->creditorAddresses) := msg.sender(address)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_7(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+creditorAddresses.length > 1500
+
+IRs:
+REF_0 -> LENGTH creditorAddresses
+TMP_0(bool) = REF_0 > 1500
+CONDITION TMP_0"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+creditorAddresses = new address[](0)
+
+IRs:
+TMP_2(address[])  = new address[](0)
+creditorAddresses(address[]) = ['TMP_2(address[])']"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+win = true
+
+IRs:
+win(bool) := True(bool)"];
+3->4;
+4[label="Node Type: END_IF 4
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+win
+
+IRs:
+RETURN win"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+creditorAddresses.length
+
+IRs:
+REF_4 -> LENGTH creditorAddresses
+RETURN REF_4"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+win = false
+
+IRs:
+win(bool) := False(bool)"];
+}

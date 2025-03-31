@@ -1,0 +1,219 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(numElements > 1500,Not enough elements to clear)
+
+IRs:
+TMP_8(bool) = numElements > 1500
+TMP_9(None) = SOLIDITY_CALL require(bool,string)(TMP_8,Not enough elements to clear)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(batchSize > 0,Batch size must be greater than zero)
+
+IRs:
+TMP_10(bool) = batchSize > 0
+TMP_11(None) = SOLIDITY_CALL require(bool,string)(TMP_10,Batch size must be greater than zero)"];
+2->14;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+5->11;
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < deleteCount
+
+IRs:
+TMP_12(bool) = i < deleteCount
+CONDITION TMP_12"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+array[numElements - 1] = 0
+
+IRs:
+TMP_13(uint256) = numElements - 1
+REF_3(uint256) -> array[TMP_13]
+REF_3(uint256) (->array) := 0(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+numElements --
+
+IRs:
+TMP_14(uint256) := numElements(uint256)
+numElements(uint256) = numElements - 1"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_15(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->7;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+numElements == 0
+
+IRs:
+TMP_16(bool) = numElements == 0
+CONDITION TMP_16"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+array.length = 0
+
+IRs:
+REF_4 -> LENGTH array
+REF_4(uint256) (->array) := 0(uint256)"];
+12->13;
+13[label="Node Type: END_IF 13
+"];
+14[label="Node Type: IF 14
+
+EXPRESSION:
+batchSize > numElements
+
+IRs:
+TMP_17(bool) = batchSize > numElements
+CONDITION TMP_17"];
+14->15[label="True"];
+14->16[label="False"];
+15[label="Node Type: EXPRESSION 15
+
+EXPRESSION:
+deleteCount = numElements
+
+IRs:
+deleteCount(uint256) := numElements(uint256)"];
+15->17;
+16[label="Node Type: EXPRESSION 16
+
+EXPRESSION:
+deleteCount = batchSize
+
+IRs:
+deleteCount(uint256) := batchSize(uint256)"];
+16->17;
+17[label="Node Type: END_IF 17
+"];
+17->6;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+numElements
+
+IRs:
+RETURN numElements"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+array.length
+
+IRs:
+REF_5 -> LENGTH array
+RETURN REF_5"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(numbers > 0,Number of elements must be greater than zero)
+
+IRs:
+TMP_0(bool) = numbers > 0
+TMP_1(None) = SOLIDITY_CALL require(bool,string)(TMP_0,Number of elements must be greater than zero)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < numbers
+
+IRs:
+TMP_2(bool) = i < numbers
+CONDITION TMP_2"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+array.push(value)
+
+IRs:
+REF_1 -> LENGTH array
+TMP_4(uint256) := REF_1(uint256)
+TMP_5(uint256) = TMP_4 + 1
+REF_1(uint256) (->array) := TMP_5(uint256)
+REF_2(uint256) -> array[TMP_4]
+REF_2(uint256) (->array) := value(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+numElements ++
+
+IRs:
+TMP_6(uint256) := numElements(uint256)
+numElements(uint256) = numElements + 1"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_7(uint256) := i(uint256)
+i(uint256) = i + 1"];
+8->5;
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+numElements = 0
+
+IRs:
+numElements(uint256) := 0(uint256)"];
+}

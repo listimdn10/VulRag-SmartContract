@@ -1,0 +1,203 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+recipients.push(newRecipient)
+
+IRs:
+REF_20 -> LENGTH recipients
+TMP_18(uint256) := REF_20(uint256)
+TMP_19(uint256) = TMP_18 + 1
+REF_20(uint256) (->recipients) := TMP_19(uint256)
+REF_21(address) -> recipients[TMP_18]
+REF_21(address) (->recipients) := newRecipient(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+recipients.push(0x1111111111111111111111111111111111111111)
+
+IRs:
+REF_1 -> LENGTH recipients
+TMP_1(uint256) := REF_1(uint256)
+TMP_2(uint256) = TMP_1 + 1
+REF_1(uint256) (->recipients) := TMP_2(uint256)
+REF_2(address) -> recipients[TMP_1]
+REF_2(address) (->recipients) := 97433442488726861213578988847752201310395502865(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+recipients.push(0x2222222222222222222222222222222222222222)
+
+IRs:
+REF_4 -> LENGTH recipients
+TMP_4(uint256) := REF_4(uint256)
+TMP_5(uint256) = TMP_4 + 1
+REF_4(uint256) (->recipients) := TMP_5(uint256)
+REF_5(address) -> recipients[TMP_4]
+REF_5(address) (->recipients) := 194866884977453722427157977695504402620791005730(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+recipients.push(0x3333333333333333333333333333333333333333)
+
+IRs:
+REF_7 -> LENGTH recipients
+TMP_7(uint256) := REF_7(uint256)
+TMP_8(uint256) = TMP_7 + 1
+REF_7(uint256) (->recipients) := TMP_8(uint256)
+REF_8(address) -> recipients[TMP_7]
+REF_8(address) (->recipients) := 292300327466180583640736966543256603931186508595(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value > 0,Must send ETH to deposit)
+
+IRs:
+TMP_9(bool) = msg.value > 0
+TMP_10(None) = SOLIDITY_CALL require(bool,string)(TMP_9,Must send ETH to deposit)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+2->9;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+i < recipients.length
+
+IRs:
+REF_9 -> LENGTH recipients
+TMP_11(bool) = i < REF_9
+CONDITION TMP_11"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[recipients[i]] = 1000000000000000000
+
+IRs:
+REF_10(address) -> recipients[i]
+REF_11(uint256) -> balances[REF_10]
+REF_11(uint256) (->balances) := 1000000000000000000(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_12(uint256) := i(uint256)
+i(uint256) = i + 1"];
+6->4;
+7[label="Node Type: BEGIN_LOOP 7
+"];
+7->10;
+8[label="Node Type: END_LOOP 8
+"];
+9[label="Node Type: NEW VARIABLE 9
+
+EXPRESSION:
+j = 0
+
+IRs:
+j(uint256) := 0(uint256)"];
+9->7;
+10[label="Node Type: IF_LOOP 10
+
+EXPRESSION:
+j < recipients.length
+
+IRs:
+REF_12 -> LENGTH recipients
+TMP_13(bool) = j < REF_12
+CONDITION TMP_13"];
+10->11[label="True"];
+10->8[label="False"];
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+require(bool,string)(recipients[j].send(balances[recipients[j]]),Payment failed)
+
+IRs:
+REF_13(address) -> recipients[j]
+REF_15(address) -> recipients[j]
+REF_16(uint256) -> balances[REF_15]
+TMP_14 = SEND dest:REF_13 value:REF_16
+TMP_15(None) = SOLIDITY_CALL require(bool,string)(TMP_14,Payment failed)"];
+11->12;
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+balances[recipients[j]] = 0
+
+IRs:
+REF_17(address) -> recipients[j]
+REF_18(uint256) -> balances[REF_17]
+REF_18(uint256) (->balances) := 0(uint256)"];
+12->13;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+j ++
+
+IRs:
+TMP_16(uint256) := j(uint256)
+j(uint256) = j + 1"];
+13->10;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(index < recipients.length,Index out of bounds)
+
+IRs:
+REF_22 -> LENGTH recipients
+TMP_20(bool) = index < REF_22
+TMP_21(None) = SOLIDITY_CALL require(bool,string)(TMP_20,Index out of bounds)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+recipients[index]
+
+IRs:
+REF_23(address) -> recipients[index]
+RETURN REF_23"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+recipients.length
+
+IRs:
+REF_24 -> LENGTH recipients
+RETURN REF_24"];
+}

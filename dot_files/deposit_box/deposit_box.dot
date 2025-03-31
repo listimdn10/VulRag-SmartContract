@@ -1,0 +1,22 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value == amount,incorrect amount)
+
+IRs:
+TMP_0(bool) = msg.value == amount
+TMP_1(None) = SOLIDITY_CALL require(bool,string)(TMP_0,incorrect amount)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balance[msg.sender] == amount
+
+IRs:
+REF_0(uint256) -> balance[msg.sender]
+TMP_2(bool) = REF_0 == amount"];
+}

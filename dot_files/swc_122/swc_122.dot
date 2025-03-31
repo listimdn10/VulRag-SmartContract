@@ -1,0 +1,22 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(user == msg.sender,Unauthorized user)
+
+IRs:
+TMP_0(bool) = user == msg.sender
+TMP_1(None) = SOLIDITY_CALL require(bool,string)(TMP_0,Unauthorized user)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+authorizedUsers[user] = true
+
+IRs:
+REF_0(bool) -> authorizedUsers[user]
+REF_0(bool) (->authorizedUsers) := True(bool)"];
+}

@@ -1,0 +1,73 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+refundAddresses.push(0x79B483371E87d664cd39491b5F06250165e4b184)
+
+IRs:
+REF_1 -> LENGTH refundAddresses
+TMP_1(uint256) := REF_1(uint256)
+TMP_2(uint256) = TMP_1 + 1
+REF_1(uint256) (->refundAddresses) := TMP_2(uint256)
+REF_2(address) -> refundAddresses[TMP_1]
+REF_2(address) (->refundAddresses) := 694813447870989484213047828542697217882537111940(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+refundAddresses.push(0x79B483371E87d664cd39491b5F06250165e4b185)
+
+IRs:
+REF_4 -> LENGTH refundAddresses
+TMP_4(uint256) := REF_4(uint256)
+TMP_5(uint256) = TMP_4 + 1
+REF_4(uint256) (->refundAddresses) := TMP_5(uint256)
+REF_5(address) -> refundAddresses[TMP_4]
+REF_5(address) (->refundAddresses) := 694813447870989484213047828542697217882537111941(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: BEGIN_LOOP 1
+"];
+1->4;
+2[label="Node Type: END_LOOP 2
+"];
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->1;
+4[label="Node Type: IF_LOOP 4
+
+EXPRESSION:
+x < refundAddresses.length
+
+IRs:
+REF_6 -> LENGTH refundAddresses
+TMP_6(bool) = x < REF_6
+CONDITION TMP_6"];
+4->5[label="True"];
+4->2[label="False"];
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(refundAddresses[x].send(refunds[refundAddresses[x]]))
+
+IRs:
+REF_7(address) -> refundAddresses[x]
+REF_9(address) -> refundAddresses[x]
+REF_10(uint256) -> refunds[REF_9]
+TMP_7 = SEND dest:REF_7 value:REF_10
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+x ++
+
+IRs:
+TMP_9(uint256) := x(uint256)
+x(uint256) = x + 1"];
+6->4;
+}

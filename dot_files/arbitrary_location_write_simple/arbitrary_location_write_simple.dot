@@ -1,0 +1,100 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+bonusCodes = new uint256[](0)
+
+IRs:
+TMP_1(uint256[])  = new uint256[](0)
+bonusCodes(uint256[]) = ['TMP_1(uint256[])']"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_10(bool) = msg.sender == owner
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(msg.sender)
+
+IRs:
+TMP_12(None) = SOLIDITY_CALL selfdestruct(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(0 <= bonusCodes.length)
+
+IRs:
+REF_3 -> LENGTH bonusCodes
+TMP_5(bool) = 0 <= REF_3
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+bonusCodes.length --
+
+IRs:
+REF_4 -> LENGTH bonusCodes
+TMP_7(uint256) := REF_4(uint256)
+REF_4(-> bonusCodes) = REF_4 - 1"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+bonusCodes.push(c)
+
+IRs:
+REF_1 -> LENGTH bonusCodes
+TMP_3(uint256) := REF_1(uint256)
+TMP_4(uint256) = TMP_3 + 1
+REF_1(uint256) (->bonusCodes) := TMP_4(uint256)
+REF_2(uint256) -> bonusCodes[TMP_3]
+REF_2(uint256) (->bonusCodes) := c(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(idx < bonusCodes.length)
+
+IRs:
+REF_5 -> LENGTH bonusCodes
+TMP_8(bool) = idx < REF_5
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+bonusCodes[idx] = c
+
+IRs:
+REF_6(uint256) -> bonusCodes[idx]
+REF_6(uint256) (->bonusCodes) := c(uint256)"];
+}

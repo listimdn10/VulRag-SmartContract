@@ -1,0 +1,9 @@
+digraph CFG {
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+x = 1
+
+IRs:
+x(uint256) := 1(uint256)"];
+}

@@ -1,0 +1,90 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(! everMatched,Invariant violated: everMatched is true!)
+
+IRs:
+TMP_5 = UnaryType.BANG everMatched 
+TMP_6(None) = SOLIDITY_CALL require(bool,string)(TMP_5,Invariant violated: everMatched is true!)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+hash = keccak256(bytes)(abi.encodePacked(yay))
+
+IRs:
+TMP_0(bytes) = SOLIDITY_CALL abi.encodePacked()(yay)
+TMP_1(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_0)
+hash(bytes32) := TMP_1(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+slates[hash] = yay
+
+IRs:
+REF_1(address) -> slates[hash]
+REF_1(address) (->slates) := yay(address)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+hash
+
+IRs:
+RETURN hash"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+slate
+
+IRs:
+RETURN slate"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+nay != address(0x0)
+
+IRs:
+TMP_2 = CONVERT 0 to address
+TMP_3(bool) = nay != TMP_2
+CONDITION TMP_3"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+everMatched = (slates[slate] == nay)
+
+IRs:
+REF_2(address) -> slates[slate]
+TMP_4(bool) = REF_2 == nay
+everMatched(bool) := TMP_4(bool)"];
+2->3;
+3[label="Node Type: END_IF 3
+"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+everMatched = false
+
+IRs:
+everMatched(bool) := False(bool)"];
+}

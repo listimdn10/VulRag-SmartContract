@@ -1,0 +1,32 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(callee.call(),Call failed)
+
+IRs:
+TMP_0(bool) = LOW_LEVEL_CALL, dest:callee, function:call, arguments:[]  
+TMP_1(None) = SOLIDITY_CALL require(bool,string)(TMP_0,Call failed)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+success = callee.call()
+
+IRs:
+TMP_2(bool) = LOW_LEVEL_CALL, dest:callee, function:call, arguments:[]  
+success(bool) := TMP_2(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(success,Call failed)
+
+IRs:
+TMP_3(None) = SOLIDITY_CALL require(bool,string)(success,Call failed)"];
+}

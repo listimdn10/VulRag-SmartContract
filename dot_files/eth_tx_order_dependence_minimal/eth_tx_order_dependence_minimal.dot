@@ -1,0 +1,84 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! claimed)
+
+IRs:
+TMP_5 = UnaryType.BANG claimed 
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(submission < 10)
+
+IRs:
+TMP_7(bool) = submission < 10
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+msg.sender.transfer(reward)
+
+IRs:
+Transfer dest:msg.sender value:reward"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+claimed = true
+
+IRs:
+claimed(bool) := True(bool)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(! claimed)
+
+IRs:
+TMP_0 = UnaryType.BANG claimed 
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_2(bool) = msg.sender == owner
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner.transfer(reward)
+
+IRs:
+Transfer dest:owner value:reward"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+reward = msg.value
+
+IRs:
+reward(uint256) := msg.value(uint256)"];
+}

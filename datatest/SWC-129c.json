@@ -1,9 +1,0 @@
-{
-    "id": "SWC-129",
-    "description": [
-        "A typographical error can occur for example when the intent of a defined operation is to sum a number to a variable (+=) but it has accidentally been defined in a wrong way (=+), introducing a typo which happens to be a valid operator. Instead of calculating the sum it initializes the variable again.",
-        "The unary + operator is deprecated in new solidity compiler versions."
-    ],
-    "typo_simple.sol": "pragma solidity ^0.4.25;\n\ncontract TypoSimple {\n\n uint onlyOne = 1;\n bool win = false;\n\n function addOne() public {\n onlyOne =+ 1;\n if(onlyOne>1) {\n win = true;\n }\n }\n\n function iWin() view public returns (bool) {\n return win;\n }\n}\n",
-    "typo_simple_fixed.sol": "pragma solidity ^0.4.25;\n\ncontract TypoSimple {\n\n uint onlyOne = 1;\n bool win = false;\n\n function addOne() public {\n onlyOne += 1;\n if(onlyOne > 1) {\n win = true;\n }\n }\n\n function iWin() view public returns (bool) {\n return win;\n }\n}\n"
-}

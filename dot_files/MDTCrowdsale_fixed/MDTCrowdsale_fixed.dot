@@ -1,0 +1,531 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->12;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(saleActive,Sale is not active)
+
+IRs:
+TMP_21(None) = SOLIDITY_CALL require(bool,string)(saleActive,Sale is not active)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(currentStage > 0,No active stage)
+
+IRs:
+TMP_22(bool) = currentStage > 0
+TMP_23(None) = SOLIDITY_CALL require(bool,string)(TMP_22,No active stage)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+stage = stages[currentStage]
+
+IRs:
+REF_17(Crowdsale.Stage) -> stages[currentStage]
+stage(Crowdsale.Stage) := REF_17(Crowdsale.Stage)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool,string)(stage.sold + msg.value <= stage.cap,Stage cap reached)
+
+IRs:
+REF_18(uint256) -> stage.sold
+TMP_24(uint256) = REF_18 (c)+ msg.value
+REF_19(uint256) -> stage.cap
+TMP_25(bool) = TMP_24 <= REF_19
+TMP_26(None) = SOLIDITY_CALL require(bool,string)(TMP_25,Stage cap reached)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+tokens = msg.value * stage.rate
+
+IRs:
+REF_20(uint256) -> stage.rate
+TMP_27(uint256) = msg.value (c)* REF_20
+tokens(uint256) := TMP_27(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+require(bool,string)(token.balanceOf(address(this)) >= tokens,Not enough tokens)
+
+IRs:
+TMP_28 = CONVERT this to address
+TMP_29(uint256) = HIGH_LEVEL_CALL, dest:token(CustomToken), function:balanceOf, arguments:['TMP_28']  
+TMP_30(bool) = TMP_29 >= tokens
+TMP_31(None) = SOLIDITY_CALL require(bool,string)(TMP_30,Not enough tokens)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+stage.sold += msg.value
+
+IRs:
+REF_22(uint256) -> stage.sold
+REF_22(-> stage) = REF_22 (c)+ msg.value"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+contributions[msg.sender] += msg.value
+
+IRs:
+REF_23(uint256) -> contributions[msg.sender]
+REF_23(-> contributions) = REF_23 (c)+ msg.value"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+token.transfer(msg.sender,tokens)
+
+IRs:
+TMP_32(bool) = HIGH_LEVEL_CALL, dest:token(CustomToken), function:transfer, arguments:['msg.sender', 'tokens']  "];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+10->11;
+11[label="Node Type: EXPRESSION 11
+
+EXPRESSION:
+TokensPurchased(msg.sender,tokens)
+
+IRs:
+Emit TokensPurchased(msg.sender,tokens)"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+onlyWhitelisted()
+
+IRs:
+MODIFIER_CALL, Crowdsale.onlyWhitelisted()()"];
+12->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+token = new CustomToken(initialSupply)
+
+IRs:
+TMP_15(CustomToken) = new CustomToken(initialSupply) 
+token(CustomToken) := TMP_15(CustomToken)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+stages[1] = Stage({rate:1000,cap:50000000000000000000,sold:0})
+
+IRs:
+REF_13(Crowdsale.Stage) -> stages[1]
+TMP_16(Crowdsale.Stage) = new Stage(1000,50000000000000000000,0)
+REF_13(Crowdsale.Stage) (->stages) := TMP_16(Crowdsale.Stage)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+stages[2] = Stage({rate:800,cap:100000000000000000000,sold:0})
+
+IRs:
+REF_14(Crowdsale.Stage) -> stages[2]
+TMP_17(Crowdsale.Stage) = new Stage(800,100000000000000000000,0)
+REF_14(Crowdsale.Stage) (->stages) := TMP_17(Crowdsale.Stage)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+stages[3] = Stage({rate:600,cap:200000000000000000000,sold:0})
+
+IRs:
+REF_15(Crowdsale.Stage) -> stages[3]
+TMP_18(Crowdsale.Stage) = new Stage(600,200000000000000000000,0)
+REF_15(Crowdsale.Stage) (->stages) := TMP_18(Crowdsale.Stage)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+currentStage = 1
+
+IRs:
+currentStage(uint8) := 1(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(currentStage < 3,No more stages)
+
+IRs:
+TMP_37(bool) = currentStage < 3
+TMP_38(None) = SOLIDITY_CALL require(bool,string)(TMP_37,No more stages)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+currentStage ++
+
+IRs:
+TMP_39(uint8) := currentStage(uint8)
+currentStage(uint8) = currentStage (c)+ 1"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+StageChanged(currentStage)
+
+IRs:
+Emit StageChanged(currentStage)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Crowdsale.onlyOwner()()"];
+4->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.sender == owner,Not owner)
+
+IRs:
+TMP_48(bool) = msg.sender == owner
+TMP_49(None) = SOLIDITY_CALL require(bool,string)(TMP_48,Not owner)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(whitelisted[msg.sender],Not whitelisted)
+
+IRs:
+REF_28(bool) -> whitelisted[msg.sender]
+TMP_50(None) = SOLIDITY_CALL require(bool,string)(REF_28,Not whitelisted)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+saleActive = status
+
+IRs:
+saleActive(bool) := status(bool)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Crowdsale.onlyOwner()()"];
+2->1;
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+saleActive = false
+
+IRs:
+saleActive(bool) := False(bool)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+whitelisted[investor] = status
+
+IRs:
+REF_16(bool) -> whitelisted[investor]
+REF_16(bool) (->whitelisted) := status(bool)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Whitelisted(investor,status)
+
+IRs:
+Emit Whitelisted(investor,status)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Crowdsale.onlyOwner()()"];
+3->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(token.balanceOf(address(this)) >= amount,Not enough tokens)
+
+IRs:
+TMP_42 = CONVERT this to address
+TMP_43(uint256) = HIGH_LEVEL_CALL, dest:token(CustomToken), function:balanceOf, arguments:['TMP_42']  
+TMP_44(bool) = TMP_43 >= amount
+TMP_45(None) = SOLIDITY_CALL require(bool,string)(TMP_44,Not enough tokens)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+token.transfer(recipient,amount)
+
+IRs:
+TMP_46(bool) = HIGH_LEVEL_CALL, dest:token(CustomToken), function:transfer, arguments:['recipient', 'amount']  "];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Crowdsale.onlyOwner()()"];
+3->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+allowance[msg.sender][spender] = value
+
+IRs:
+REF_4(mapping(address => uint256)) -> allowance[msg.sender]
+REF_5(uint256) -> REF_4[spender]
+REF_5(uint256) (->allowance) := value(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+Approval(msg.sender,spender,value)
+
+IRs:
+Emit Approval(msg.sender,spender,value)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+totalSupply = initialSupply * 10 ** uint256(decimals)
+
+IRs:
+TMP_0 = CONVERT decimals to uint256
+TMP_1(uint256) = 10 (c)** TMP_0
+TMP_2(uint256) = initialSupply (c)* TMP_1
+totalSupply(uint256) := TMP_2(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[owner] = totalSupply
+
+IRs:
+REF_0(uint256) -> balanceOf[owner]
+REF_0(uint256) (->balanceOf) := totalSupply(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.sender == owner,Not owner)
+
+IRs:
+TMP_12(bool) = msg.sender == owner
+TMP_13(None) = SOLIDITY_CALL require(bool,string)(TMP_12,Not owner)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+name = MyToken
+
+IRs:
+name(string) := MyToken(string)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+symbol = MTK
+
+IRs:
+symbol(string) := MTK(string)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+decimals = 18
+
+IRs:
+decimals(uint8) := 18(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(balanceOf[msg.sender] >= value,Not enough balance)
+
+IRs:
+REF_1(uint256) -> balanceOf[msg.sender]
+TMP_3(bool) = REF_1 >= value
+TMP_4(None) = SOLIDITY_CALL require(bool,string)(TMP_3,Not enough balance)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] -= value
+
+IRs:
+REF_2(uint256) -> balanceOf[msg.sender]
+REF_2(-> balanceOf) = REF_2 (c)- value"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[to] += value
+
+IRs:
+REF_3(uint256) -> balanceOf[to]
+REF_3(-> balanceOf) = REF_3 (c)+ value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(msg.sender,to,value)
+
+IRs:
+Emit Transfer(msg.sender,to,value)"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(balanceOf[from] >= value,Not enough balance)
+
+IRs:
+REF_6(uint256) -> balanceOf[from]
+TMP_7(bool) = REF_6 >= value
+TMP_8(None) = SOLIDITY_CALL require(bool,string)(TMP_7,Not enough balance)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(allowance[from][msg.sender] >= value,Not approved)
+
+IRs:
+REF_7(mapping(address => uint256)) -> allowance[from]
+REF_8(uint256) -> REF_7[msg.sender]
+TMP_9(bool) = REF_8 >= value
+TMP_10(None) = SOLIDITY_CALL require(bool,string)(TMP_9,Not approved)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+balanceOf[from] -= value
+
+IRs:
+REF_9(uint256) -> balanceOf[from]
+REF_9(-> balanceOf) = REF_9 (c)- value"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+balanceOf[to] += value
+
+IRs:
+REF_10(uint256) -> balanceOf[to]
+REF_10(-> balanceOf) = REF_10 (c)+ value"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+allowance[from][msg.sender] -= value
+
+IRs:
+REF_11(mapping(address => uint256)) -> allowance[from]
+REF_12(uint256) -> REF_11[msg.sender]
+REF_12(-> allowance) = REF_12 (c)- value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Transfer(from,to,value)
+
+IRs:
+Emit Transfer(from,to,value)"];
+6->7;
+7[label="Node Type: RETURN 7
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+}

@@ -1,0 +1,73 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+initialized = 1
+
+IRs:
+initialized(uint256) := 1(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+initialized == 0
+
+IRs:
+TMP_0(bool) = initialized == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+count = sub(count,input)
+
+IRs:
+TMP_1(uint256) = INTERNAL_CALL, IntegerOverflowMultiTxMultiFuncFeasible.sub(uint256,uint256)(count,input)
+count(uint256) := TMP_1(uint256)"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+initialized = 0
+
+IRs:
+initialized(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+count = 1
+
+IRs:
+count(uint256) := 1(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b <= a)
+
+IRs:
+TMP_2(bool) = b <= a
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_4(uint256) = a - b
+RETURN TMP_4"];
+}

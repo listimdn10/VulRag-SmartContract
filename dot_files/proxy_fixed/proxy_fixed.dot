@@ -1,0 +1,64 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+callee = address(0x0)
+
+IRs:
+TMP_0 = CONVERT 0 to address
+callee(address) := TMP_0(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(callee.delegatecall(_data))
+
+IRs:
+TMP_2(bool) = LOW_LEVEL_CALL, dest:callee, function:delegatecall, arguments:['_data']  
+TMP_3(None) = SOLIDITY_CALL require(bool)(TMP_2)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == owner)
+
+IRs:
+TMP_4(bool) = msg.sender == owner
+TMP_5(None) = SOLIDITY_CALL require(bool)(TMP_4)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+callee = newCallee
+
+IRs:
+callee(address) := newCallee(address)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, Proxy.onlyOwner()()"];
+2->1;
+}

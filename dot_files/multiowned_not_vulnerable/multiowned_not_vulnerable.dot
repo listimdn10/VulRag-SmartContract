@@ -1,0 +1,247 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+root = msg.sender
+
+IRs:
+root(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[root] = root
+
+IRs:
+REF_0(address) -> owners[root]
+REF_0(address) (->owners) := root(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owners[_owner] == msg.sender || (owners[_owner] != 0 && msg.sender == root))
+
+IRs:
+REF_2(address) -> owners[_owner]
+TMP_3(bool) = REF_2 == msg.sender
+REF_3(address) -> owners[_owner]
+TMP_4(bool) = REF_3 != 0
+TMP_5(bool) = msg.sender == root
+TMP_6(bool) = TMP_4 && TMP_5
+TMP_7(bool) = TMP_3 || TMP_6
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[_owner] = 0
+
+IRs:
+REF_4(address) -> owners[_owner]
+REF_4(address) (->owners) := 0(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MultiOwnable.onlyOwner()()"];
+4->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != 0)
+
+IRs:
+TMP_0(bool) = _owner != 0
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[_owner] = msg.sender
+
+IRs:
+REF_1(address) -> owners[_owner]
+REF_1(address) (->owners) := msg.sender(address)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MultiOwnable.onlyOwner()()"];
+4->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owners[msg.sender] != 0)
+
+IRs:
+REF_5(address) -> owners[msg.sender]
+TMP_10(bool) = REF_5 != 0
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+root = msg.sender
+
+IRs:
+root(address) := msg.sender(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[root] = root
+
+IRs:
+REF_6(address) -> owners[root]
+REF_6(address) (->owners) := root(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owners[_owner] == msg.sender || (owners[_owner] != 0 && msg.sender == root))
+
+IRs:
+REF_8(address) -> owners[_owner]
+TMP_15(bool) = REF_8 == msg.sender
+REF_9(address) -> owners[_owner]
+TMP_16(bool) = REF_9 != 0
+TMP_17(bool) = msg.sender == root
+TMP_18(bool) = TMP_16 && TMP_17
+TMP_19(bool) = TMP_15 || TMP_18
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[_owner] = 0
+
+IRs:
+REF_10(address) -> owners[_owner]
+REF_10(address) (->owners) := 0(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MultiOwnable.onlyOwner()()"];
+4->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_owner != 0)
+
+IRs:
+TMP_12(bool) = _owner != 0
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+owners[_owner] = msg.sender
+
+IRs:
+REF_7(address) -> owners[_owner]
+REF_7(address) (->owners) := msg.sender(address)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MultiOwnable.onlyOwner()()"];
+4->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owners[msg.sender] != 0)
+
+IRs:
+REF_13(address) -> owners[msg.sender]
+TMP_24(bool) = REF_13 != 0
+TMP_25(None) = SOLIDITY_CALL require(bool)(TMP_24)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+msg.sender.transfer(this.balance)
+
+IRs:
+REF_12(uint256) = SOLIDITY_CALL balance(address)(this)
+Transfer dest:msg.sender value:REF_12"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyOwner()
+
+IRs:
+MODIFIER_CALL, MultiOwnable.onlyOwner()()"];
+2->1;
+}

@@ -1,0 +1,272 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)((z = x + y) >= x,Addition overflow)
+
+IRs:
+TMP_12(uint256) = x + y
+z(uint256) := TMP_12(uint256)
+TMP_13(bool) = z >= x
+TMP_14(None) = SOLIDITY_CALL require(bool,string)(TMP_13,Addition overflow)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+yay = slates[slate]
+
+IRs:
+REF_12(address) -> slates[slate]
+yay(address) := REF_12(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+approvals[yay] = add(approvals[yay],weight)
+
+IRs:
+REF_13(uint256) -> approvals[yay]
+REF_14(uint256) -> approvals[yay]
+TMP_10(uint256) = INTERNAL_CALL, SimpleDSChief.add(uint256,uint256)(REF_14,weight)
+REF_13(uint256) (->approvals) := TMP_10(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+senderSlate = votes[msg.sender]
+
+IRs:
+REF_18(bytes32) -> votes[msg.sender]
+senderSlate(bytes32) := REF_18(bytes32)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+option = slates[senderSlate]
+
+IRs:
+REF_19(address) -> slates[senderSlate]
+option(address) := REF_19(address)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+senderDeposit = deposits[msg.sender]
+
+IRs:
+REF_20(uint256) -> deposits[msg.sender]
+senderDeposit(uint256) := REF_20(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(approvals[option] >= senderDeposit)
+
+IRs:
+REF_21(uint256) -> approvals[option]
+TMP_18(bool) = REF_21 >= senderDeposit
+TMP_19(None) = SOLIDITY_CALL require(bool)(TMP_18)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+hash = keccak256()(abi.encodePacked(yay))
+
+IRs:
+TMP_6(bytes) = SOLIDITY_CALL abi.encodePacked()(yay)
+TMP_7(bytes32) = SOLIDITY_CALL keccak256()(TMP_6)
+hash(bytes32) := TMP_7(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+slates[hash] = yay
+
+IRs:
+REF_7(address) -> slates[hash]
+REF_7(address) (->slates) := yay(address)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+hash
+
+IRs:
+RETURN hash"];
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+slate
+
+IRs:
+RETURN slate"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+deposits[msg.sender] = sub(deposits[msg.sender],wad)
+
+IRs:
+REF_3(uint256) -> deposits[msg.sender]
+REF_4(uint256) -> deposits[msg.sender]
+TMP_2(uint256) = INTERNAL_CALL, SimpleDSChief.sub(uint256,uint256)(REF_4,wad)
+REF_3(uint256) (->deposits) := TMP_2(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+subWeight(wad,votes[msg.sender])
+
+IRs:
+REF_5(bytes32) -> votes[msg.sender]
+INTERNAL_CALL, SimpleDSChief.subWeight(uint256,bytes32)(wad,REF_5)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+deposits[msg.sender] = add(deposits[msg.sender],wad)
+
+IRs:
+REF_0(uint256) -> deposits[msg.sender]
+REF_1(uint256) -> deposits[msg.sender]
+TMP_0(uint256) = INTERNAL_CALL, SimpleDSChief.add(uint256,uint256)(REF_1,wad)
+REF_0(uint256) (->deposits) := TMP_0(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+addWeight(wad,votes[msg.sender])
+
+IRs:
+REF_2(bytes32) -> votes[msg.sender]
+INTERNAL_CALL, SimpleDSChief.addWeight(uint256,bytes32)(wad,REF_2)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)((z = x - y) <= x,Subtraction underflow)
+
+IRs:
+TMP_15(uint256) = x - y
+z(uint256) := TMP_15(uint256)
+TMP_16(bool) = z <= x
+TMP_17(None) = SOLIDITY_CALL require(bool,string)(TMP_16,Subtraction underflow)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+yay = slates[slate]
+
+IRs:
+REF_15(address) -> slates[slate]
+yay(address) := REF_15(address)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+approvals[yay] = sub(approvals[yay],weight)
+
+IRs:
+REF_16(uint256) -> approvals[yay]
+REF_17(uint256) -> approvals[yay]
+TMP_11(uint256) = INTERNAL_CALL, SimpleDSChief.sub(uint256,uint256)(REF_17,weight)
+REF_16(uint256) (->approvals) := TMP_11(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+weight = deposits[msg.sender]
+
+IRs:
+REF_8(uint256) -> deposits[msg.sender]
+weight(uint256) := REF_8(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+subWeight(weight,votes[msg.sender])
+
+IRs:
+REF_9(bytes32) -> votes[msg.sender]
+INTERNAL_CALL, SimpleDSChief.subWeight(uint256,bytes32)(weight,REF_9)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+votes[msg.sender] = slate
+
+IRs:
+REF_10(bytes32) -> votes[msg.sender]
+REF_10(bytes32) (->votes) := slate(bytes32)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+addWeight(weight,votes[msg.sender])
+
+IRs:
+REF_11(bytes32) -> votes[msg.sender]
+INTERNAL_CALL, SimpleDSChief.addWeight(uint256,bytes32)(weight,REF_11)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+slate = etch(yay)
+
+IRs:
+TMP_4(bytes32) = INTERNAL_CALL, SimpleDSChief.etch(address)(yay)
+slate(bytes32) := TMP_4(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+voteSlate(slate)
+
+IRs:
+INTERNAL_CALL, SimpleDSChief.voteSlate(bytes32)(slate)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+slate
+
+IRs:
+RETURN slate"];
+}

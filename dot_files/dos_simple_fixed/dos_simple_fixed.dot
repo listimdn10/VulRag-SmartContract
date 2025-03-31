@@ -1,0 +1,217 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(batchSize > 0 && batchSize <= maxBatchSize,Invalid batch size)
+
+IRs:
+TMP_10(bool) = batchSize > 0
+TMP_11(bool) = batchSize <= maxBatchSize
+TMP_12(bool) = TMP_10 && TMP_11
+TMP_13(None) = SOLIDITY_CALL require(bool,string)(TMP_12,Invalid batch size)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(listAddresses.length > 0,Array is already empty)
+
+IRs:
+REF_4 -> LENGTH listAddresses
+TMP_14(bool) = REF_4 > 0
+TMP_15(None) = SOLIDITY_CALL require(bool,string)(TMP_14,Array is already empty)"];
+2->11;
+4[label="Node Type: BEGIN_LOOP 4
+"];
+4->7;
+5[label="Node Type: END_LOOP 5
+"];
+6[label="Node Type: NEW VARIABLE 6
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+6->4;
+7[label="Node Type: IF_LOOP 7
+
+EXPRESSION:
+i < deleteCount
+
+IRs:
+TMP_16(bool) = i < deleteCount
+CONDITION TMP_16"];
+7->8[label="True"];
+7->5[label="False"];
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+listAddresses[listAddresses.length - 1] = address(0)
+
+IRs:
+REF_5 -> LENGTH listAddresses
+TMP_17(uint256) = REF_5 - 1
+REF_6(address) -> listAddresses[TMP_17]
+TMP_18 = CONVERT 0 to address
+REF_6(address) (->listAddresses) := TMP_18(address)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+listAddresses.length --
+
+IRs:
+REF_7 -> LENGTH listAddresses
+TMP_19(uint256) := REF_7(uint256)
+REF_7(-> listAddresses) = REF_7 - 1"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_20(uint256) := i(uint256)
+i(uint256) = i + 1"];
+10->7;
+11[label="Node Type: IF 11
+
+EXPRESSION:
+batchSize > listAddresses.length
+
+IRs:
+REF_8 -> LENGTH listAddresses
+TMP_21(bool) = batchSize > REF_8
+CONDITION TMP_21"];
+11->12[label="True"];
+11->13[label="False"];
+12[label="Node Type: EXPRESSION 12
+
+EXPRESSION:
+deleteCount = listAddresses.length
+
+IRs:
+REF_9 -> LENGTH listAddresses
+deleteCount(uint256) := REF_9(uint256)"];
+12->14;
+13[label="Node Type: EXPRESSION 13
+
+EXPRESSION:
+deleteCount = batchSize
+
+IRs:
+deleteCount(uint256) := batchSize(uint256)"];
+13->14;
+14[label="Node Type: END_IF 14
+"];
+14->6;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(batchSize > 0 && batchSize <= maxBatchSize,Invalid batch size)
+
+IRs:
+TMP_0(bool) = batchSize > 0
+TMP_1(bool) = batchSize <= maxBatchSize
+TMP_2(bool) = TMP_0 && TMP_1
+TMP_3(None) = SOLIDITY_CALL require(bool,string)(TMP_2,Invalid batch size)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+listAddresses.length < 1500
+
+IRs:
+REF_0 -> LENGTH listAddresses
+TMP_4(bool) = REF_0 < 1500
+CONDITION TMP_4"];
+2->5[label="True"];
+2->10[label="False"];
+3[label="Node Type: BEGIN_LOOP 3
+"];
+3->6;
+4[label="Node Type: END_LOOP 4
+"];
+4->9;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+5->3;
+6[label="Node Type: IF_LOOP 6
+
+EXPRESSION:
+i < batchSize
+
+IRs:
+TMP_5(bool) = i < batchSize
+CONDITION TMP_5"];
+6->7[label="True"];
+6->4[label="False"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+listAddresses.push(msg.sender)
+
+IRs:
+REF_2 -> LENGTH listAddresses
+TMP_7(uint256) := REF_2(uint256)
+TMP_8(uint256) = TMP_7 + 1
+REF_2(uint256) (->listAddresses) := TMP_8(uint256)
+REF_3(address) -> listAddresses[TMP_7]
+REF_3(address) (->listAddresses) := msg.sender(address)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_9(uint256) := i(uint256)
+i(uint256) = i + 1"];
+8->6;
+9[label="Node Type: RETURN 9
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+10[label="Node Type: END_IF 10
+"];
+10->11;
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+false
+
+IRs:
+RETURN False"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+listAddresses.length
+
+IRs:
+REF_10 -> LENGTH listAddresses
+RETURN REF_10"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+maxBatchSize = 50
+
+IRs:
+maxBatchSize(uint256) := 50(uint256)"];
+}

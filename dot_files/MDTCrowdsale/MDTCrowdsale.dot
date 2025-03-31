@@ -1,0 +1,2086 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(beneficiary != 0x0)
+
+IRs:
+TMP_177(bool) = beneficiary != 0
+TMP_178(None) = SOLIDITY_CALL require(bool)(TMP_177)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(validPurchase())
+
+IRs:
+TMP_179(bool) = INTERNAL_CALL, CappedCrowdsale.validPurchase()()
+TMP_180(None) = SOLIDITY_CALL require(bool)(TMP_179)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tokens = weiAmount.mul(rate)
+
+IRs:
+TMP_181(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['weiAmount', 'rate'] 
+tokens(uint256) := TMP_181(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_182(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_182(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token.mint(beneficiary,tokens)
+
+IRs:
+TMP_183(bool) = HIGH_LEVEL_CALL, dest:token(ERC20Mintable), function:mint, arguments:['beneficiary', 'tokens']  "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+TokenPurchase(msg.sender,beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,beneficiary,weiAmount,tokens)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale.forwardFunds()()"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_cap > 0)
+
+IRs:
+TMP_193(bool) = _cap > 0
+TMP_194(None) = SOLIDITY_CALL require(bool)(TMP_193)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+cap = _cap
+
+IRs:
+cap(uint256) := _cap(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+new ERC20Mintable()
+
+IRs:
+TMP_175(ERC20Mintable) = new ERC20Mintable() 
+RETURN TMP_175"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_startBlock >= block.number)
+
+IRs:
+TMP_165(bool) = _startBlock >= block.number
+TMP_166(None) = SOLIDITY_CALL require(bool)(TMP_165)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_endBlock >= _startBlock)
+
+IRs:
+TMP_167(bool) = _endBlock >= _startBlock
+TMP_168(None) = SOLIDITY_CALL require(bool)(TMP_167)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_169(bool) = _rate > 0
+TMP_170(None) = SOLIDITY_CALL require(bool)(TMP_169)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_wallet != 0x0)
+
+IRs:
+TMP_171(bool) = _wallet != 0
+TMP_172(None) = SOLIDITY_CALL require(bool)(TMP_171)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+token = createTokenContract()
+
+IRs:
+TMP_173(ERC20Mintable) = INTERNAL_CALL, Crowdsale.createTokenContract()()
+token(ERC20Mintable) := TMP_173(ERC20Mintable)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+startBlock = _startBlock
+
+IRs:
+startBlock(uint256) := _startBlock(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+endBlock = _endBlock
+
+IRs:
+endBlock(uint256) := _endBlock(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+capReached = weiRaised >= cap
+
+IRs:
+TMP_199(bool) = weiRaised >= cap
+capReached(bool) := TMP_199(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+super.hasEnded() || capReached
+
+IRs:
+TMP_200(bool) = INTERNAL_CALL, Crowdsale.hasEnded()()
+TMP_201(bool) = TMP_200 || capReached
+RETURN TMP_201"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+withinCap = weiRaised.add(msg.value) <= cap
+
+IRs:
+TMP_195(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'msg.value'] 
+TMP_196(bool) = TMP_195 <= cap
+withinCap(bool) := TMP_196(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+super.validPurchase() && withinCap
+
+IRs:
+TMP_197(bool) = INTERNAL_CALL, Crowdsale.validPurchase()()
+TMP_198(bool) = TMP_197 && withinCap
+RETURN TMP_198"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(beneficiary != 0x0)
+
+IRs:
+TMP_149(bool) = beneficiary != 0
+TMP_150(None) = SOLIDITY_CALL require(bool)(TMP_149)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(validPurchase())
+
+IRs:
+TMP_151(bool) = INTERNAL_CALL, Crowdsale.validPurchase()()
+TMP_152(None) = SOLIDITY_CALL require(bool)(TMP_151)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tokens = weiAmount.mul(rate)
+
+IRs:
+TMP_153(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['weiAmount', 'rate'] 
+tokens(uint256) := TMP_153(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_154(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_154(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token.mint(beneficiary,tokens)
+
+IRs:
+TMP_155(bool) = HIGH_LEVEL_CALL, dest:token(ERC20Mintable), function:mint, arguments:['beneficiary', 'tokens']  "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+TokenPurchase(msg.sender,beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,beneficiary,weiAmount,tokens)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale.forwardFunds()()"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+new ERC20Mintable()
+
+IRs:
+TMP_147(ERC20Mintable) = new ERC20Mintable() 
+RETURN TMP_147"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_startBlock >= block.number)
+
+IRs:
+TMP_137(bool) = _startBlock >= block.number
+TMP_138(None) = SOLIDITY_CALL require(bool)(TMP_137)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_endBlock >= _startBlock)
+
+IRs:
+TMP_139(bool) = _endBlock >= _startBlock
+TMP_140(None) = SOLIDITY_CALL require(bool)(TMP_139)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_141(bool) = _rate > 0
+TMP_142(None) = SOLIDITY_CALL require(bool)(TMP_141)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_wallet != 0x0)
+
+IRs:
+TMP_143(bool) = _wallet != 0
+TMP_144(None) = SOLIDITY_CALL require(bool)(TMP_143)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+token = createTokenContract()
+
+IRs:
+TMP_145(ERC20Mintable) = INTERNAL_CALL, Crowdsale.createTokenContract()()
+token(ERC20Mintable) := TMP_145(ERC20Mintable)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+startBlock = _startBlock
+
+IRs:
+startBlock(uint256) := _startBlock(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+endBlock = _endBlock
+
+IRs:
+endBlock(uint256) := _endBlock(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.number > endBlock
+
+IRs:
+TMP_164(bool) = block.number > endBlock
+RETURN TMP_164"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+current = block.number
+
+IRs:
+current(uint256) := block.number(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+withinPeriod = current >= startBlock && current <= endBlock
+
+IRs:
+TMP_159(bool) = current >= startBlock
+TMP_160(bool) = current <= endBlock
+TMP_161(bool) = TMP_159 && TMP_160
+withinPeriod(bool) := TMP_161(bool)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+nonZeroPurchase = msg.value != 0
+
+IRs:
+TMP_162(bool) = msg.value != 0
+nonZeroPurchase(bool) := TMP_162(bool)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+withinPeriod && nonZeroPurchase
+
+IRs:
+TMP_163(bool) = withinPeriod && nonZeroPurchase
+RETURN TMP_163"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_allowed[owner][spender]
+
+IRs:
+REF_1(mapping(address => uint256)) -> _allowed[owner]
+REF_2(uint256) -> REF_1[spender]
+RETURN REF_2"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(spender != address(0))
+
+IRs:
+TMP_18 = CONVERT 0 to address
+TMP_19(bool) = spender != TMP_18
+TMP_20(None) = SOLIDITY_CALL require(bool)(TMP_19)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_allowed[msg.sender][spender] = value
+
+IRs:
+REF_3(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_4(uint256) -> REF_3[spender]
+REF_4(uint256) (->_allowed) := value(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(msg.sender,spender,value)
+
+IRs:
+Emit Approval(msg.sender,spender,value)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_balances[owner]
+
+IRs:
+REF_0(uint256) -> _balances[owner]
+RETURN REF_0"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(spender != address(0))
+
+IRs:
+TMP_30 = CONVERT 0 to address
+TMP_31(bool) = spender != TMP_30
+TMP_32(None) = SOLIDITY_CALL require(bool)(TMP_31)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_allowed[msg.sender][spender] = _allowed[msg.sender][spender].sub(subtractedValue)
+
+IRs:
+REF_19(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_20(uint256) -> REF_19[spender]
+REF_21(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_22(uint256) -> REF_21[spender]
+TMP_33(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_22', 'subtractedValue'] 
+REF_20(uint256) (->_allowed) := TMP_33(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(msg.sender,spender,_allowed[msg.sender][spender])
+
+IRs:
+REF_24(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_25(uint256) -> REF_24[spender]
+Emit Approval(msg.sender,spender,REF_25)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(spender != address(0))
+
+IRs:
+TMP_25 = CONVERT 0 to address
+TMP_26(bool) = spender != TMP_25
+TMP_27(None) = SOLIDITY_CALL require(bool)(TMP_26)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_allowed[msg.sender][spender] = _allowed[msg.sender][spender].add(addedValue)
+
+IRs:
+REF_12(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_13(uint256) -> REF_12[spender]
+REF_14(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_15(uint256) -> REF_14[spender]
+TMP_28(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_15', 'addedValue'] 
+REF_13(uint256) (->_allowed) := TMP_28(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(msg.sender,spender,_allowed[msg.sender][spender])
+
+IRs:
+REF_17(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_18(uint256) -> REF_17[spender]
+Emit Approval(msg.sender,spender,REF_18)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_totalSupply
+
+IRs:
+RETURN _totalSupply"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_transfer(msg.sender,to,value)
+
+IRs:
+INTERNAL_CALL, ERC20._transfer(address,address,uint256)(msg.sender,to,value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_allowed[from][msg.sender] = _allowed[from][msg.sender].sub(value)
+
+IRs:
+REF_5(mapping(address => uint256)) -> _allowed[from]
+REF_6(uint256) -> REF_5[msg.sender]
+REF_7(mapping(address => uint256)) -> _allowed[from]
+REF_8(uint256) -> REF_7[msg.sender]
+TMP_22(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_8', 'value'] 
+REF_6(uint256) (->_allowed) := TMP_22(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_transfer(from,to,value)
+
+IRs:
+INTERNAL_CALL, ERC20._transfer(address,address,uint256)(from,to,value)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(from,msg.sender,_allowed[from][msg.sender])
+
+IRs:
+REF_10(mapping(address => uint256)) -> _allowed[from]
+REF_11(uint256) -> REF_10[msg.sender]
+Emit Approval(from,msg.sender,REF_11)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(account != address(0))
+
+IRs:
+TMP_48 = CONVERT 0 to address
+TMP_49(bool) = account != TMP_48
+TMP_50(None) = SOLIDITY_CALL require(bool)(TMP_49)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_totalSupply = _totalSupply.sub(value)
+
+IRs:
+TMP_51(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_totalSupply', 'value'] 
+_totalSupply(uint256) := TMP_51(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_balances[account] = _balances[account].sub(value)
+
+IRs:
+REF_37(uint256) -> _balances[account]
+REF_38(uint256) -> _balances[account]
+TMP_52(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_38', 'value'] 
+REF_37(uint256) (->_balances) := TMP_52(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(account,address(0),value)
+
+IRs:
+TMP_53 = CONVERT 0 to address
+Emit Transfer(account,TMP_53,value)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_allowed[account][msg.sender] = _allowed[account][msg.sender].sub(value)
+
+IRs:
+REF_40(mapping(address => uint256)) -> _allowed[account]
+REF_41(uint256) -> REF_40[msg.sender]
+REF_42(mapping(address => uint256)) -> _allowed[account]
+REF_43(uint256) -> REF_42[msg.sender]
+TMP_55(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_43', 'value'] 
+REF_41(uint256) (->_allowed) := TMP_55(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_burn(account,value)
+
+IRs:
+INTERNAL_CALL, ERC20._burn(address,uint256)(account,value)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(account,msg.sender,_allowed[account][msg.sender])
+
+IRs:
+REF_45(mapping(address => uint256)) -> _allowed[account]
+REF_46(uint256) -> REF_45[msg.sender]
+Emit Approval(account,msg.sender,REF_46)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(account != address(0))
+
+IRs:
+TMP_41 = CONVERT 0 to address
+TMP_42(bool) = account != TMP_41
+TMP_43(None) = SOLIDITY_CALL require(bool)(TMP_42)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_totalSupply = _totalSupply.add(value)
+
+IRs:
+TMP_44(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_totalSupply', 'value'] 
+_totalSupply(uint256) := TMP_44(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_balances[account] = _balances[account].add(value)
+
+IRs:
+REF_33(uint256) -> _balances[account]
+REF_34(uint256) -> _balances[account]
+TMP_45(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_34', 'value'] 
+REF_33(uint256) (->_balances) := TMP_45(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(address(0),account,value)
+
+IRs:
+TMP_46 = CONVERT 0 to address
+Emit Transfer(TMP_46,account,value)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(to != address(0))
+
+IRs:
+TMP_35 = CONVERT 0 to address
+TMP_36(bool) = to != TMP_35
+TMP_37(None) = SOLIDITY_CALL require(bool)(TMP_36)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_balances[from] = _balances[from].sub(value)
+
+IRs:
+REF_26(uint256) -> _balances[from]
+REF_27(uint256) -> _balances[from]
+TMP_38(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_27', 'value'] 
+REF_26(uint256) (->_balances) := TMP_38(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_balances[to] = _balances[to].add(value)
+
+IRs:
+REF_29(uint256) -> _balances[to]
+REF_30(uint256) -> _balances[to]
+TMP_39(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_30', 'value'] 
+REF_29(uint256) (->_balances) := TMP_39(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(from,to,value)
+
+IRs:
+Emit Transfer(from,to,value)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_addMinter(account)
+
+IRs:
+INTERNAL_CALL, MinterRole._addMinter(address)(account)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyMinter()
+
+IRs:
+MODIFIER_CALL, MinterRole.onlyMinter()()"];
+2->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_addMinter(msg.sender)
+
+IRs:
+INTERNAL_CALL, MinterRole._addMinter(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(spender != address(0))
+
+IRs:
+TMP_105 = CONVERT 0 to address
+TMP_106(bool) = spender != TMP_105
+TMP_107(None) = SOLIDITY_CALL require(bool)(TMP_106)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_allowed[msg.sender][spender] = _allowed[msg.sender][spender].sub(subtractedValue)
+
+IRs:
+REF_78(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_79(uint256) -> REF_78[spender]
+REF_80(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_81(uint256) -> REF_80[spender]
+TMP_108(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_81', 'subtractedValue'] 
+REF_79(uint256) (->_allowed) := TMP_108(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(msg.sender,spender,_allowed[msg.sender][spender])
+
+IRs:
+REF_83(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_84(uint256) -> REF_83[spender]
+Emit Approval(msg.sender,spender,REF_84)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(spender != address(0))
+
+IRs:
+TMP_100 = CONVERT 0 to address
+TMP_101(bool) = spender != TMP_100
+TMP_102(None) = SOLIDITY_CALL require(bool)(TMP_101)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_allowed[msg.sender][spender] = _allowed[msg.sender][spender].add(addedValue)
+
+IRs:
+REF_71(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_72(uint256) -> REF_71[spender]
+REF_73(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_74(uint256) -> REF_73[spender]
+TMP_103(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_74', 'addedValue'] 
+REF_72(uint256) (->_allowed) := TMP_103(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(msg.sender,spender,_allowed[msg.sender][spender])
+
+IRs:
+REF_76(mapping(address => uint256)) -> _allowed[msg.sender]
+REF_77(uint256) -> REF_76[spender]
+Emit Approval(msg.sender,spender,REF_77)"];
+3->4;
+4[label="Node Type: RETURN 4
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_minters.has(account)
+
+IRs:
+TMP_84(bool) = LIBRARY_CALL, dest:Roles, function:Roles.has(Roles.Role,address), arguments:['_minters', 'account'] 
+RETURN TMP_84"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_mint(to,value)
+
+IRs:
+INTERNAL_CALL, ERC20._mint(address,uint256)(to,value)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+true
+
+IRs:
+RETURN True"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+onlyMinter()
+
+IRs:
+MODIFIER_CALL, MinterRole.onlyMinter()()"];
+3->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isMinter(msg.sender))
+
+IRs:
+TMP_135(bool) = INTERNAL_CALL, MinterRole.isMinter(address)(msg.sender)
+TMP_136(None) = SOLIDITY_CALL require(bool)(TMP_135)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_removeMinter(msg.sender)
+
+IRs:
+INTERNAL_CALL, MinterRole._removeMinter(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_minters.add(account)
+
+IRs:
+LIBRARY_CALL, dest:Roles, function:Roles.add(Roles.Role,address), arguments:['_minters', 'account'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+MinterAdded(account)
+
+IRs:
+Emit MinterAdded(account)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(account != address(0))
+
+IRs:
+TMP_123 = CONVERT 0 to address
+TMP_124(bool) = account != TMP_123
+TMP_125(None) = SOLIDITY_CALL require(bool)(TMP_124)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_totalSupply = _totalSupply.sub(value)
+
+IRs:
+TMP_126(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['_totalSupply', 'value'] 
+_totalSupply(uint256) := TMP_126(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_balances[account] = _balances[account].sub(value)
+
+IRs:
+REF_96(uint256) -> _balances[account]
+REF_97(uint256) -> _balances[account]
+TMP_127(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_97', 'value'] 
+REF_96(uint256) (->_balances) := TMP_127(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(account,address(0),value)
+
+IRs:
+TMP_128 = CONVERT 0 to address
+Emit Transfer(account,TMP_128,value)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_allowed[account][msg.sender] = _allowed[account][msg.sender].sub(value)
+
+IRs:
+REF_99(mapping(address => uint256)) -> _allowed[account]
+REF_100(uint256) -> REF_99[msg.sender]
+REF_101(mapping(address => uint256)) -> _allowed[account]
+REF_102(uint256) -> REF_101[msg.sender]
+TMP_130(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_102', 'value'] 
+REF_100(uint256) (->_allowed) := TMP_130(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_burn(account,value)
+
+IRs:
+INTERNAL_CALL, ERC20._burn(address,uint256)(account,value)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+Approval(account,msg.sender,_allowed[account][msg.sender])
+
+IRs:
+REF_104(mapping(address => uint256)) -> _allowed[account]
+REF_105(uint256) -> REF_104[msg.sender]
+Emit Approval(account,msg.sender,REF_105)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(account != address(0))
+
+IRs:
+TMP_116 = CONVERT 0 to address
+TMP_117(bool) = account != TMP_116
+TMP_118(None) = SOLIDITY_CALL require(bool)(TMP_117)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_totalSupply = _totalSupply.add(value)
+
+IRs:
+TMP_119(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['_totalSupply', 'value'] 
+_totalSupply(uint256) := TMP_119(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_balances[account] = _balances[account].add(value)
+
+IRs:
+REF_92(uint256) -> _balances[account]
+REF_93(uint256) -> _balances[account]
+TMP_120(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_93', 'value'] 
+REF_92(uint256) (->_balances) := TMP_120(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(address(0),account,value)
+
+IRs:
+TMP_121 = CONVERT 0 to address
+Emit Transfer(TMP_121,account,value)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_minters.remove(account)
+
+IRs:
+LIBRARY_CALL, dest:Roles, function:Roles.remove(Roles.Role,address), arguments:['_minters', 'account'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+MinterRemoved(account)
+
+IRs:
+Emit MinterRemoved(account)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(to != address(0))
+
+IRs:
+TMP_110 = CONVERT 0 to address
+TMP_111(bool) = to != TMP_110
+TMP_112(None) = SOLIDITY_CALL require(bool)(TMP_111)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_balances[from] = _balances[from].sub(value)
+
+IRs:
+REF_85(uint256) -> _balances[from]
+REF_86(uint256) -> _balances[from]
+TMP_113(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.sub(uint256,uint256), arguments:['REF_86', 'value'] 
+REF_85(uint256) (->_balances) := TMP_113(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_balances[to] = _balances[to].add(value)
+
+IRs:
+REF_88(uint256) -> _balances[to]
+REF_89(uint256) -> _balances[to]
+TMP_114(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['REF_89', 'value'] 
+REF_88(uint256) (->_balances) := TMP_114(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+Transfer(from,to,value)
+
+IRs:
+Emit Transfer(from,to,value)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender != address(this))
+
+IRs:
+TMP_238 = CONVERT this to address
+TMP_239(bool) = msg.sender != TMP_238
+TMP_240(None) = SOLIDITY_CALL require(bool)(TMP_239)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+whitelist[addr] = true
+
+IRs:
+REF_121(bool) -> whitelist[addr]
+REF_121(bool) (->whitelist) := True(bool)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(beneficiary != 0x0)
+
+IRs:
+TMP_258(bool) = beneficiary != 0
+TMP_259(None) = SOLIDITY_CALL require(bool)(TMP_258)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(validPurchase())
+
+IRs:
+TMP_260(bool) = INTERNAL_CALL, WhitelistedCrowdsale.validPurchase()()
+TMP_261(None) = SOLIDITY_CALL require(bool)(TMP_260)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tokens = weiAmount.mul(rate)
+
+IRs:
+TMP_262(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['weiAmount', 'rate'] 
+tokens(uint256) := TMP_262(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_263(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_263(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token.mint(beneficiary,tokens)
+
+IRs:
+TMP_264(bool) = HIGH_LEVEL_CALL, dest:token(ERC20Mintable), function:mint, arguments:['beneficiary', 'tokens']  "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+TokenPurchase(msg.sender,beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,beneficiary,weiAmount,tokens)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale.forwardFunds()()"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_cap > 0)
+
+IRs:
+TMP_274(bool) = _cap > 0
+TMP_275(None) = SOLIDITY_CALL require(bool)(TMP_274)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+cap = _cap
+
+IRs:
+cap(uint256) := _cap(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+new ERC20Mintable()
+
+IRs:
+TMP_256(ERC20Mintable) = new ERC20Mintable() 
+RETURN TMP_256"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_startBlock >= block.number)
+
+IRs:
+TMP_246(bool) = _startBlock >= block.number
+TMP_247(None) = SOLIDITY_CALL require(bool)(TMP_246)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_endBlock >= _startBlock)
+
+IRs:
+TMP_248(bool) = _endBlock >= _startBlock
+TMP_249(None) = SOLIDITY_CALL require(bool)(TMP_248)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_250(bool) = _rate > 0
+TMP_251(None) = SOLIDITY_CALL require(bool)(TMP_250)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_wallet != 0x0)
+
+IRs:
+TMP_252(bool) = _wallet != 0
+TMP_253(None) = SOLIDITY_CALL require(bool)(TMP_252)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+token = createTokenContract()
+
+IRs:
+TMP_254(ERC20Mintable) = INTERNAL_CALL, Crowdsale.createTokenContract()()
+token(ERC20Mintable) := TMP_254(ERC20Mintable)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+startBlock = _startBlock
+
+IRs:
+startBlock(uint256) := _startBlock(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+endBlock = _endBlock
+
+IRs:
+endBlock(uint256) := _endBlock(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+capReached = weiRaised >= cap
+
+IRs:
+TMP_280(bool) = weiRaised >= cap
+capReached(bool) := TMP_280(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+super.hasEnded() || capReached
+
+IRs:
+TMP_281(bool) = INTERNAL_CALL, Crowdsale.hasEnded()()
+TMP_282(bool) = TMP_281 || capReached
+RETURN TMP_282"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->4;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+addToWhitelist(msg.sender)
+
+IRs:
+INTERNAL_CALL, WhitelistedCrowdsale.addToWhitelist(address)(msg.sender)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+addToWhitelist(0x0d5bda9db5dd36278c6a40683960ba58cac0149b)
+
+IRs:
+INTERNAL_CALL, WhitelistedCrowdsale.addToWhitelist(address)(76265291978179794068297605348014300781707531419)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+addToWhitelist(0x1b6ddc637c24305b354d7c337f9126f68aad4886)
+
+IRs:
+INTERNAL_CALL, WhitelistedCrowdsale.addToWhitelist(address)(156592730594754992450049383569236692726216214662)"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+CappedCrowdsale(50000000000000000000000)
+
+IRs:
+INTERNAL_CALL, CappedCrowdsale.CappedCrowdsale(uint256)(50000000000000000000000)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+Crowdsale(block.number,block.number + 100000,1,msg.sender)
+
+IRs:
+TMP_287(uint256) = block.number + 100000
+INTERNAL_CALL, Crowdsale.Crowdsale(uint256,uint256,uint256,address)(block.number,TMP_287,1,msg.sender)"];
+5->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+withinCap = weiRaised.add(msg.value) <= cap
+
+IRs:
+TMP_276(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'msg.value'] 
+TMP_277(bool) = TMP_276 <= cap
+withinCap(bool) := TMP_277(bool)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+super.validPurchase() && withinCap
+
+IRs:
+TMP_278(bool) = INTERNAL_CALL, Crowdsale.validPurchase()()
+TMP_279(bool) = TMP_278 && withinCap
+RETURN TMP_279"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_addMinter(account)
+
+IRs:
+INTERNAL_CALL, MinterRole._addMinter(address)(account)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+onlyMinter()
+
+IRs:
+MODIFIER_CALL, MinterRole.onlyMinter()()"];
+2->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_addMinter(msg.sender)
+
+IRs:
+INTERNAL_CALL, MinterRole._addMinter(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+_minters.has(account)
+
+IRs:
+TMP_73(bool) = LIBRARY_CALL, dest:Roles, function:Roles.has(Roles.Role,address), arguments:['_minters', 'account'] 
+RETURN TMP_73"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(isMinter(msg.sender))
+
+IRs:
+TMP_81(bool) = INTERNAL_CALL, MinterRole.isMinter(address)(msg.sender)
+TMP_82(None) = SOLIDITY_CALL require(bool)(TMP_81)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_removeMinter(msg.sender)
+
+IRs:
+INTERNAL_CALL, MinterRole._removeMinter(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_minters.add(account)
+
+IRs:
+LIBRARY_CALL, dest:Roles, function:Roles.add(Roles.Role,address), arguments:['_minters', 'account'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+MinterAdded(account)
+
+IRs:
+Emit MinterAdded(account)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_minters.remove(account)
+
+IRs:
+LIBRARY_CALL, dest:Roles, function:Roles.remove(Roles.Role,address), arguments:['_minters', 'account'] "];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+MinterRemoved(account)
+
+IRs:
+Emit MinterRemoved(account)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(account != address(0))
+
+IRs:
+TMP_58 = CONVERT 0 to address
+TMP_59(bool) = account != TMP_58
+TMP_60(None) = SOLIDITY_CALL require(bool)(TMP_59)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(! has(role,account))
+
+IRs:
+TMP_61(bool) = INTERNAL_CALL, Roles.has(Roles.Role,address)(role,account)
+TMP_62 = UnaryType.BANG TMP_61 
+TMP_63(None) = SOLIDITY_CALL require(bool)(TMP_62)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+role.bearer[account] = true
+
+IRs:
+REF_47(mapping(address => bool)) -> role.bearer
+REF_48(bool) -> REF_47[account]
+REF_48(bool) (->role) := True(bool)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(account != address(0))
+
+IRs:
+TMP_69 = CONVERT 0 to address
+TMP_70(bool) = account != TMP_69
+TMP_71(None) = SOLIDITY_CALL require(bool)(TMP_70)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+role.bearer[account]
+
+IRs:
+REF_51(mapping(address => bool)) -> role.bearer
+REF_52(bool) -> REF_51[account]
+RETURN REF_52"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(account != address(0))
+
+IRs:
+TMP_64 = CONVERT 0 to address
+TMP_65(bool) = account != TMP_64
+TMP_66(None) = SOLIDITY_CALL require(bool)(TMP_65)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(has(role,account))
+
+IRs:
+TMP_67(bool) = INTERNAL_CALL, Roles.has(Roles.Role,address)(role,account)
+TMP_68(None) = SOLIDITY_CALL require(bool)(TMP_67)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+role.bearer[account] = false
+
+IRs:
+REF_49(mapping(address => bool)) -> role.bearer
+REF_50(bool) -> REF_49[account]
+REF_50(bool) (->role) := False(bool)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+c = a + b
+
+IRs:
+TMP_11(uint256) = a + b
+c(uint256) := TMP_11(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(c >= a)
+
+IRs:
+TMP_12(bool) = c >= a
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b > 0)
+
+IRs:
+TMP_5(bool) = b > 0
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = a / b
+
+IRs:
+TMP_7(uint256) = a / b
+c(uint256) := TMP_7(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b != 0)
+
+IRs:
+TMP_14(bool) = b != 0
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a % b
+
+IRs:
+TMP_16(uint256) = a % b
+RETURN TMP_16"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+a == 0
+
+IRs:
+TMP_0(bool) = a == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+0
+
+IRs:
+RETURN 0"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+c = a * b
+
+IRs:
+TMP_1(uint256) = a * b
+c(uint256) := TMP_1(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+require(bool)(c / a == b)
+
+IRs:
+TMP_2(uint256) = c / a
+TMP_3(bool) = TMP_2 == b
+TMP_4(None) = SOLIDITY_CALL require(bool)(TMP_3)"];
+5->6;
+6[label="Node Type: RETURN 6
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b <= a)
+
+IRs:
+TMP_8(bool) = b <= a
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+c = a - b
+
+IRs:
+TMP_10(uint256) = a - b
+c(uint256) := TMP_10(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+c
+
+IRs:
+RETURN c"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender != address(this))
+
+IRs:
+TMP_230 = CONVERT this to address
+TMP_231(bool) = msg.sender != TMP_230
+TMP_232(None) = SOLIDITY_CALL require(bool)(TMP_231)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+whitelist[addr] = true
+
+IRs:
+REF_119(bool) -> whitelist[addr]
+REF_119(bool) (->whitelist) := True(bool)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(beneficiary != 0x0)
+
+IRs:
+TMP_214(bool) = beneficiary != 0
+TMP_215(None) = SOLIDITY_CALL require(bool)(TMP_214)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(validPurchase())
+
+IRs:
+TMP_216(bool) = INTERNAL_CALL, WhitelistedCrowdsale.validPurchase()()
+TMP_217(None) = SOLIDITY_CALL require(bool)(TMP_216)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+weiAmount = msg.value
+
+IRs:
+weiAmount(uint256) := msg.value(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+tokens = weiAmount.mul(rate)
+
+IRs:
+TMP_218(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.mul(uint256,uint256), arguments:['weiAmount', 'rate'] 
+tokens(uint256) := TMP_218(uint256)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+weiRaised = weiRaised.add(weiAmount)
+
+IRs:
+TMP_219(uint256) = LIBRARY_CALL, dest:SafeMath, function:SafeMath.add(uint256,uint256), arguments:['weiRaised', 'weiAmount'] 
+weiRaised(uint256) := TMP_219(uint256)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+token.mint(beneficiary,tokens)
+
+IRs:
+TMP_220(bool) = HIGH_LEVEL_CALL, dest:token(ERC20Mintable), function:mint, arguments:['beneficiary', 'tokens']  "];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+TokenPurchase(msg.sender,beneficiary,weiAmount,tokens)
+
+IRs:
+Emit TokenPurchase(msg.sender,beneficiary,weiAmount,tokens)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+forwardFunds()
+
+IRs:
+INTERNAL_CALL, Crowdsale.forwardFunds()()"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+new ERC20Mintable()
+
+IRs:
+TMP_212(ERC20Mintable) = new ERC20Mintable() 
+RETURN TMP_212"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(_startBlock >= block.number)
+
+IRs:
+TMP_202(bool) = _startBlock >= block.number
+TMP_203(None) = SOLIDITY_CALL require(bool)(TMP_202)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(_endBlock >= _startBlock)
+
+IRs:
+TMP_204(bool) = _endBlock >= _startBlock
+TMP_205(None) = SOLIDITY_CALL require(bool)(TMP_204)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(_rate > 0)
+
+IRs:
+TMP_206(bool) = _rate > 0
+TMP_207(None) = SOLIDITY_CALL require(bool)(TMP_206)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(_wallet != 0x0)
+
+IRs:
+TMP_208(bool) = _wallet != 0
+TMP_209(None) = SOLIDITY_CALL require(bool)(TMP_208)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+token = createTokenContract()
+
+IRs:
+TMP_210(ERC20Mintable) = INTERNAL_CALL, Crowdsale.createTokenContract()()
+token(ERC20Mintable) := TMP_210(ERC20Mintable)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+startBlock = _startBlock
+
+IRs:
+startBlock(uint256) := _startBlock(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+endBlock = _endBlock
+
+IRs:
+endBlock(uint256) := _endBlock(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+rate = _rate
+
+IRs:
+rate(uint256) := _rate(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+wallet = _wallet
+
+IRs:
+wallet(address) := _wallet(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+buyTokens(msg.sender)
+
+IRs:
+INTERNAL_CALL, Crowdsale.buyTokens(address)(msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+wallet.transfer(msg.value)
+
+IRs:
+Transfer dest:wallet value:msg.value"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+block.number > endBlock
+
+IRs:
+TMP_229(bool) = block.number > endBlock
+RETURN TMP_229"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+super.validPurchase() || (whitelist[msg.sender] && ! hasEnded())
+
+IRs:
+TMP_233(bool) = INTERNAL_CALL, Crowdsale.validPurchase()()
+REF_120(bool) -> whitelist[msg.sender]
+TMP_234(bool) = INTERNAL_CALL, Crowdsale.hasEnded()()
+TMP_235 = UnaryType.BANG TMP_234 
+TMP_236(bool) = REF_120 && TMP_235
+TMP_237(bool) = TMP_233 || TMP_236
+RETURN TMP_237"];
+}

@@ -1,0 +1,50 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+initialized == 0
+
+IRs:
+TMP_0(bool) = initialized == 0
+CONDITION TMP_0"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+initialized = 1
+
+IRs:
+initialized(uint256) := 1(uint256)"];
+2->3;
+3[label="Node Type: RETURN 3
+"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+count -= input
+
+IRs:
+count(uint256) = count - input"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+initialized = 0
+
+IRs:
+initialized(uint256) := 0(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+count = 1
+
+IRs:
+count(uint256) := 1(uint256)"];
+}

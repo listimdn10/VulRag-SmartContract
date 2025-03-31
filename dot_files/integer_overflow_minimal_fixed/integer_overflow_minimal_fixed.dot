@@ -1,0 +1,40 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+count = sub(count,input)
+
+IRs:
+TMP_0(uint256) = INTERNAL_CALL, IntegerOverflowMinimal.sub(uint256,uint256)(count,input)
+count(uint256) := TMP_0(uint256)"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+count = 1
+
+IRs:
+count(uint256) := 1(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(b <= a)
+
+IRs:
+TMP_1(bool) = b <= a
+TMP_2(None) = SOLIDITY_CALL require(bool)(TMP_1)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+a - b
+
+IRs:
+TMP_3(uint256) = a - b
+RETURN TMP_3"];
+}

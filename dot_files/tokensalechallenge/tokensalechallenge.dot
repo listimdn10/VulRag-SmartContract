@@ -1,0 +1,84 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value == numTokens * PRICE_PER_TOKEN)
+
+IRs:
+TMP_5(uint256) = numTokens * PRICE_PER_TOKEN
+TMP_6(bool) = msg.value == TMP_5
+TMP_7(None) = SOLIDITY_CALL require(bool)(TMP_6)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] += numTokens
+
+IRs:
+REF_0(uint256) -> balanceOf[msg.sender]
+REF_0(-> balanceOf) = REF_0 + numTokens"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+address(this).balance < 1000000000000000000
+
+IRs:
+TMP_2 = CONVERT this to address
+TMP_3(uint256) = SOLIDITY_CALL balance(address)(TMP_2)
+TMP_4(bool) = TMP_3 < 1000000000000000000
+RETURN TMP_4"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(balanceOf[msg.sender] >= numTokens)
+
+IRs:
+REF_1(uint256) -> balanceOf[msg.sender]
+TMP_8(bool) = REF_1 >= numTokens
+TMP_9(None) = SOLIDITY_CALL require(bool)(TMP_8)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+balanceOf[msg.sender] -= numTokens
+
+IRs:
+REF_2(uint256) -> balanceOf[msg.sender]
+REF_2(-> balanceOf) = REF_2 - numTokens"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+msg.sender.transfer(numTokens * PRICE_PER_TOKEN)
+
+IRs:
+TMP_10(uint256) = numTokens * PRICE_PER_TOKEN
+Transfer dest:msg.sender value:TMP_10"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+PRICE_PER_TOKEN = 1000000000000000000
+
+IRs:
+PRICE_PER_TOKEN(uint256) := 1000000000000000000(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value == 1000000000000000000)
+
+IRs:
+TMP_0(bool) = msg.value == 1000000000000000000
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+}

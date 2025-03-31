@@ -1,0 +1,128 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+n == _secretNumber
+
+IRs:
+TMP_9(bool) = n == _secretNumber
+CONDITION TMP_9"];
+1->2[label="True"];
+1->4[label="False"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+guesser.transfer(p)
+
+IRs:
+Transfer dest:guesser value:p"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+success(You guessed the correct number!)
+
+IRs:
+Emit success(You guessed the correct number!)"];
+3->5;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+wrongNumber(You've made an incorrect guess!)
+
+IRs:
+Emit wrongNumber(You've made an incorrect guess!)"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(secretNumber <= 10)
+
+IRs:
+TMP_0(bool) = secretNumber <= 10
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+_secretNumber = secretNumber
+
+IRs:
+_secretNumber(uint256) := secretNumber(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+_owner = msg.sender
+
+IRs:
+_owner(address) := msg.sender(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+address(this).balance
+
+IRs:
+TMP_2 = CONVERT this to address
+TMP_3(uint256) = SOLIDITY_CALL balance(address)(TMP_2)
+RETURN TMP_3"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value == 1000000000000000000)
+
+IRs:
+TMP_4(bool) = msg.value == 1000000000000000000
+TMP_5(None) = SOLIDITY_CALL require(bool)(TMP_4)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+p = address(this).balance
+
+IRs:
+TMP_6 = CONVERT this to address
+TMP_7(uint256) = SOLIDITY_CALL balance(address)(TMP_6)
+p(uint256) := TMP_7(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+checkAndTransferPrize(n,p,msg.sender)
+
+IRs:
+TMP_8(bool) = INTERNAL_CALL, GuessTheNumber.checkAndTransferPrize(uint256,uint256,address)(n,p,msg.sender)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.sender == _owner)
+
+IRs:
+TMP_13(bool) = msg.sender == _owner
+TMP_14(None) = SOLIDITY_CALL require(bool)(TMP_13)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+selfdestruct(address)(_owner)
+
+IRs:
+TMP_15(None) = SOLIDITY_CALL selfdestruct(address)(_owner)"];
+}

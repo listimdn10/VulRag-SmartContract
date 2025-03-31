@@ -1,8 +1,0 @@
-{
-    "id": "SWC-123",
-    "description": [
-        "The Solidityrequire()construct is meant to validate external inputs of a function. In most cases, such external inputs are provided by callers, but they may also be returned by callees. In the former case, we refer to them as precondition violations. Violations of a requirement can indicate one of two possible issues:"
-    ],
-    "requirement_simple.sol": "pragma solidity ^0.4.25;\n\ncontract Bar {\n Foo private f = new Foo();\n function doubleBaz() public view returns (int256) {\n return 2 * f.baz(0);\n }\n}\n\ncontract Foo {\n function baz(int256 x) public pure returns (int256) {\n require(0 < x);\n return 42;\n }\n}\n",
-    "requirement_simple_fixed.sol": "pragma solidity ^0.4.25;\n\ncontract Bar {\n Foo private f = new Foo();\n function doubleBaz() public view returns (int256) {\n return 2 * f.baz(1); \n }\n}\n\ncontract Foo {\n function baz(int256 x) public pure returns (int256) {\n require(0 < x); \n return 42;\n }\n}\n"
-}

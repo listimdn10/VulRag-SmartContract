@@ -1,8 +1,0 @@
-{
-    "id": "SWC-131",
-    "description": [
-        "Unused variables are allowed in Solidity and they do not pose a direct security issue. It is best practice though to avoid them as they can:"
-    ],
-    "unused_variables.sol": "pragma solidity ^0.5.0;\n\ncontract UnusedVariables {\n int a = 1;\n\n \n function unusedArg(int x, int y) public view returns (int z) {\n z = x + a; \n }\n\n \n function unusedReturn(int x, int y) public pure returns (int m, int n, int o) {\n m = y - x;\n o = m/2;\n }\n\n \n function neverAccessed(int test) public pure returns (int) {\n int z = 10;\n\n if (test > z) {\n \n int x = test - z;\n\n return test - z;\n }\n\n return z;\n }\n\n function tupleAssignment(int p) public returns (int q, int r){\n (q, , r) = unusedReturn(p,2);\n\n }\n\n\n}\n",
-    "unused_variables_fixed.sol": "pragma solidity ^0.5.0;\n\ncontract UnusedVariables {\n int a = 1;\n\n function unusedArg(int x) public view returns (int z) {\n z = x + a; \n }\n\n \n function unusedReturn(int x, int y) public pure returns (int m, int n,int o) {\n m = y - x;\n o = m/2;\n }\n\n \n function neverAccessed(int test) public pure returns (int) {\n int z = 10;\n\n if (test > z) {\n return test - z;\n }\n\n return z;\n }\n\n function tupleAssignment(int p) public returns (int q, int r){\n (q, , r) = unusedReturn(p,2);\n\n }\n\n}\n"
-}

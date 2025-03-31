@@ -1,0 +1,60 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_callable.call.value(0).gas(10000)()
+
+IRs:
+TUPLE_0(bool,bytes) = LOW_LEVEL_CALL, dest:_callable, function:call, arguments:[''] value:0 gas:10000"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+callable.callMe{gas: 10000}()
+
+IRs:
+HIGH_LEVEL_CALL, dest:callable(ICallable), function:callMe, arguments:[]  gas:10000"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_callable.send(amount)
+
+IRs:
+TMP_1 = SEND dest:_callable value:amount"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+_callable.transfer(amount)
+
+IRs:
+Transfer dest:_callable value:amount"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+_callable = 0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa
+
+IRs:
+_callable(address) := 974334424887268612135789888477522013103955028650(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+callable = ICallable(_callable)
+
+IRs:
+TMP_5 = CONVERT _callable to ICallable
+callable(ICallable) := TMP_5(ICallable)"];
+}

@@ -1,8 +1,0 @@
-{
-    "id": "SWC-111",
-    "description": [
-        "Several functions and operators in Solidity are deprecated. Using them leads to reduced code quality. With new major versions of the Solidity compiler, deprecated functions and operators may result in side effects and compile errors."
-    ],
-    "deprecated_simple.sol": "pragma solidity ^0.4.24;\n\ncontract DeprecatedSimple {\n\n \n\n function useDeprecated() public constant {\n\n bytes32 blockhash = block.blockhash(0);\n bytes32 hashofhash = sha3(blockhash);\n\n uint gas = msg.gas;\n\n if (gas == 0) {\n throw;\n }\n\n address(this).callcode();\n\n var a = [1,2,3];\n\n var (x, y, z) = (false, \"test\", 0);\n\n suicide(address(0));\n }\n\n function () public {}\n\n}\n",
-    "deprecated_simple_fixed.sol": "pragma solidity ^0.4.24;\n\ncontract DeprecatedSimpleFixed {\n\n function useDeprecatedFixed() public view {\n\n bytes32 bhash = blockhash(0);\n bytes32 hashofhash = keccak256(bhash);\n\n uint gas = gasleft();\n\n if (gas == 0) {\n revert();\n }\n\n address(this).delegatecall();\n\n uint8[3] memory a = [1,2,3];\n\n (bool x, string memory y, uint8 z) = (false, \"test\", 0);\n\n selfdestruct(address(0));\n }\n\n function () external {}\n\n}\n"
-}

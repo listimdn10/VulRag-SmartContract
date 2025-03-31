@@ -1,0 +1,41 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+2 * f.baz(1)
+
+IRs:
+TMP_0(int256) = HIGH_LEVEL_CALL, dest:f(Foo), function:baz, arguments:['1']  
+TMP_1(uint256) = 2 * TMP_0
+RETURN TMP_1"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+f = new Foo()
+
+IRs:
+TMP_3(Foo) = new Foo() 
+f(Foo) := TMP_3(Foo)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(0 < x)
+
+IRs:
+TMP_4(bool) = 0 < x
+TMP_5(None) = SOLIDITY_CALL require(bool)(TMP_4)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+42
+
+IRs:
+RETURN 42"];
+}

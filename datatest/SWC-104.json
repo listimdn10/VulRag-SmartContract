@@ -1,8 +1,0 @@
-{
-    "id": "SWC-104",
-    "description": [
-        "The return value of a message call is not checked. Execution will resume even if the called contract throws an exception. If the call fails accidentally or an attacker forces the call to fail, this may cause unexpected behaviour in the subsequent program logic."
-    ],
-    "unchecked_return_value.sol": "pragma solidity 0.4.25;\n\ncontract ReturnValue {\n\n function callchecked(address callee) public {\n require(callee.call());\n }\n\n function callnotchecked(address callee) public {\n callee.call();\n }\n}\n",
-    "unchecked_return_value_fixed.sol": "pragma solidity 0.4.25;\n\ncontract ReturnValue {\n\n function callchecked(address callee) public {\n require(callee.call(), \"Call failed\");\n }\n\n function callnotchecked(address callee) public {\n bool success = callee.call();\n require(success, \"Call failed\");\n }\n}\n"
-}

@@ -1,0 +1,115 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+z = 10
+
+IRs:
+z(int256) := 10(int256)"];
+1->2;
+2[label="Node Type: IF 2
+
+EXPRESSION:
+test > z
+
+IRs:
+TMP_3(bool) = test > z
+CONDITION TMP_3"];
+2->3[label="True"];
+2->4[label="False"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+test - z
+
+IRs:
+TMP_4(int256) = test - z
+RETURN TMP_4"];
+4[label="Node Type: END_IF 4
+"];
+4->5;
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+a = 1
+
+IRs:
+a(int256) := 1(int256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+(q,None,r) = unusedReturn(p,2)
+
+IRs:
+TUPLE_0(int256,int256,int256) = INTERNAL_CALL, UnusedVariables.unusedReturn(int256,int256)(p,2)
+q(int256)= UNPACK TUPLE_0 index: 0 
+r(int256)= UNPACK TUPLE_0 index: 2 "];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(q,r)
+
+IRs:
+RETURN q,r"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+z = x + a
+
+IRs:
+TMP_0(int256) = x + a
+z(int256) := TMP_0(int256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+z
+
+IRs:
+RETURN z"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m = y - x
+
+IRs:
+TMP_1(int256) = y - x
+m(int256) := TMP_1(int256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+o = m / 2
+
+IRs:
+TMP_2(int256) = m / 2
+o(int256) := TMP_2(int256)"];
+2->3;
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+(m,n,o)
+
+IRs:
+RETURN m,n,o"];
+}

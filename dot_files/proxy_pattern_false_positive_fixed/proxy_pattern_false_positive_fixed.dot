@@ -1,0 +1,26 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.sender == owner,Caller is not the owner)
+
+IRs:
+TMP_0(bool) = msg.sender == owner
+TMP_1(None) = SOLIDITY_CALL require(bool,string)(TMP_0,Caller is not the owner)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+}

@@ -1,0 +1,77 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value != 0,send funds!)
+
+IRs:
+TMP_9(bool) = msg.value != 0
+TMP_10(None) = SOLIDITY_CALL require(bool,string)(TMP_9,send funds!)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+func.f = frwd
+
+IRs:
+REF_1(function()) -> func.f
+REF_1(function()) (->func) := frwd(None)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+func.f()
+
+IRs:
+REF_2(function()) -> func.f
+INTERNAL_DYNAMIC_CALL REF_2()  "];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value != 0)
+
+IRs:
+TMP_0(bool) = msg.value != 0
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+withdraw()
+
+IRs:
+INTERNAL_CALL, FunctionTypes.withdraw()()"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(msg.value == 0,dont send funds!)
+
+IRs:
+TMP_2(bool) = msg.value == 0
+TMP_3(None) = SOLIDITY_CALL require(bool,string)(TMP_2,dont send funds!)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+address(msg.sender).transfer(address(this).balance)
+
+IRs:
+TMP_4 = CONVERT msg.sender to address
+TMP_5 = CONVERT this to address
+TMP_6(uint256) = SOLIDITY_CALL balance(address)(TMP_5)
+Transfer dest:TMP_4 value:TMP_6"];
+}

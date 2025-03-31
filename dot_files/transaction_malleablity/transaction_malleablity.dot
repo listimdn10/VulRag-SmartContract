@@ -1,0 +1,288 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(owners.length == init.length)
+
+IRs:
+REF_0 -> LENGTH owners
+REF_1 -> LENGTH init
+TMP_0(bool) = REF_0 == REF_1
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+1->4;
+2[label="Node Type: BEGIN_LOOP 2
+"];
+2->5;
+3[label="Node Type: END_LOOP 3
+"];
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+i = 0
+
+IRs:
+i(uint256) := 0(uint256)"];
+4->2;
+5[label="Node Type: IF_LOOP 5
+
+EXPRESSION:
+i < owners.length
+
+IRs:
+REF_2 -> LENGTH owners
+TMP_2(bool) = i < REF_2
+CONDITION TMP_2"];
+5->6[label="True"];
+5->3[label="False"];
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[owners[i]] = init[i]
+
+IRs:
+REF_3(address) -> owners[i]
+REF_4(uint256) -> balances[REF_3]
+REF_5(uint256) -> init[i]
+REF_4(uint256) (->balances) := REF_5(uint256)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+i ++
+
+IRs:
+TMP_3(uint256) := i(uint256)
+i(uint256) = i + 1"];
+7->5;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+sig.length != 65
+
+IRs:
+REF_12 -> LENGTH sig
+TMP_19(bool) = REF_12 != 65
+CONDITION TMP_19"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+address(0)
+
+IRs:
+TMP_20 = CONVERT 0 to address
+RETURN TMP_20"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: INLINE ASM 7
+"];
+7->8;
+8[label="Node Type: END INLINE ASM 8
+"];
+8->9;
+9[label="Node Type: IF 9
+
+EXPRESSION:
+v < 27
+
+IRs:
+TMP_21(bool) = v < 27
+CONDITION TMP_21"];
+9->10[label="True"];
+9->11[label="False"];
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+v += 27
+
+IRs:
+v(uint8) = v + 27"];
+10->11;
+11[label="Node Type: END_IF 11
+"];
+11->12;
+12[label="Node Type: IF 12
+
+EXPRESSION:
+v != 27 && v != 28
+
+IRs:
+TMP_22(bool) = v != 27
+TMP_23(bool) = v != 28
+TMP_24(bool) = TMP_22 && TMP_23
+CONDITION TMP_24"];
+12->13[label="True"];
+12->14[label="False"];
+13[label="Node Type: RETURN 13
+
+EXPRESSION:
+address(0)
+
+IRs:
+TMP_25 = CONVERT 0 to address
+RETURN TMP_25"];
+14[label="Node Type: END_IF 14
+"];
+14->15;
+15[label="Node Type: RETURN 15
+
+EXPRESSION:
+ecrecover(bytes32,uint8,bytes32,bytes32)(hash,v,r,s)
+
+IRs:
+TMP_26(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(hash,v,r,s)
+RETURN TMP_26"];
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+recoveredAddress
+
+IRs:
+RETURN recoveredAddress"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(Ethereum Signed Message:
+32,_hash)
+
+IRs:
+TMP_18(bytes32) = SOLIDITY_CALL keccak256()(Ethereum Signed Message:
+32,_hash)
+RETURN TMP_18"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+signHash
+
+IRs:
+RETURN signHash"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+keccak256()(address(this),bytes4(0x1296830d),_to,_value,_gasPrice,_nonce)
+
+IRs:
+TMP_15 = CONVERT this to address
+TMP_16 = CONVERT 311853837 to bytes4
+TMP_17(bytes32) = SOLIDITY_CALL keccak256()(TMP_15,TMP_16,_to,_value,_gasPrice,_nonce)
+RETURN TMP_17"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+txHash
+
+IRs:
+RETURN txHash"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+ecrecoverFromSig(getSignHash(getTransferHash(_to,_value,_gasPrice,_nonce)),_sig)
+
+IRs:
+TMP_12(bytes32) = INTERNAL_CALL, transaction_malleablity.getTransferHash(address,uint256,uint256,uint256)(_to,_value,_gasPrice,_nonce)
+TMP_13(bytes32) = INTERNAL_CALL, transaction_malleablity.getSignHash(bytes32)(TMP_12)
+TMP_14(address) = INTERNAL_CALL, transaction_malleablity.ecrecoverFromSig(bytes32,bytes)(TMP_13,_sig)
+RETURN TMP_14"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+recovered
+
+IRs:
+RETURN recovered"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+txid = keccak256()(abi.encodePacked(getTransferHash(_to,_value,_gasPrice,_nonce),_signature))
+
+IRs:
+TMP_4(bytes32) = INTERNAL_CALL, transaction_malleablity.getTransferHash(address,uint256,uint256,uint256)(_to,_value,_gasPrice,_nonce)
+TMP_5(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_4,_signature)
+TMP_6(bytes32) = SOLIDITY_CALL keccak256()(TMP_5)
+txid(bytes32) := TMP_6(bytes32)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(! signatureUsed[txid])
+
+IRs:
+REF_7(bool) -> signatureUsed[txid]
+TMP_7 = UnaryType.BANG REF_7 
+TMP_8(None) = SOLIDITY_CALL require(bool)(TMP_7)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+from = recoverTransferPreSigned(_signature,_to,_value,_gasPrice,_nonce)
+
+IRs:
+TMP_9(address) = INTERNAL_CALL, transaction_malleablity.recoverTransferPreSigned(bytes,address,uint256,uint256,uint256)(_signature,_to,_value,_gasPrice,_nonce)
+from(address) := TMP_9(address)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+require(bool)(balances[from] > _value)
+
+IRs:
+REF_8(uint256) -> balances[from]
+TMP_10(bool) = REF_8 > _value
+TMP_11(None) = SOLIDITY_CALL require(bool)(TMP_10)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+balances[from] -= _value
+
+IRs:
+REF_9(uint256) -> balances[from]
+REF_9(-> balances) = REF_9 - _value"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+balances[_to] += _value
+
+IRs:
+REF_10(uint256) -> balances[_to]
+REF_10(-> balances) = REF_10 + _value"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+signatureUsed[txid] = true
+
+IRs:
+REF_11(bool) -> signatureUsed[txid]
+REF_11(bool) (->signatureUsed) := True(bool)"];
+}

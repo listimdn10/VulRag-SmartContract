@@ -1,0 +1,32 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+signer = ecrecover(bytes32,uint8,bytes32,bytes32)(messageHash,v,r,s)
+
+IRs:
+TMP_0(address) = SOLIDITY_CALL ecrecover(bytes32,uint8,bytes32,bytes32)(messageHash,v,r,s)
+signer(address) := TMP_0(address)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+signer == owner
+
+IRs:
+TMP_1(bool) = signer == owner
+RETURN TMP_1"];
+}

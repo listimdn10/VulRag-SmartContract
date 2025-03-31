@@ -1,0 +1,142 @@
+digraph CFG {
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+constuint = 16
+
+IRs:
+constuint(uint256) := 16(uint256)"];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+storeduint1 = 15
+
+IRs:
+storeduint1(uint256) := 15(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+investmentsDeadlineTimeStamp = uint32(now)
+
+IRs:
+TMP_10 = CONVERT now to uint32
+investmentsDeadlineTimeStamp(uint32) := TMP_10(uint32)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+string1 = test1
+
+IRs:
+string1(bytes16) := test1(string)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+string2 = test1236
+
+IRs:
+string2(bytes32) := test1236(string)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+string3 = lets string something
+
+IRs:
+string3(string) := lets string something(string)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+address1 = 0xbccc714d56bc0da0fd33d96d2a87b680dd6d0df6
+
+IRs:
+address1(address) := 1077849486940724655369937642620916987477988543990(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+address2 = 0xaee905fdd3ed851e48d22059575b9f4245a82b04
+
+IRs:
+address2(address) := 998560989689174583633158458771448797668705839876(uint256)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+uints1[address1] = 88
+
+IRs:
+REF_0(uint256) -> uints1[address1]
+REF_0(uint256) (->uints1) := 88(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+uints1[address2] = 99
+
+IRs:
+REF_1(uint256) -> uints1[address2]
+REF_1(uint256) (->uints1) := 99(uint256)"];
+4->5;
+5[label="Node Type: NEW VARIABLE 5
+
+EXPRESSION:
+dev1 = DeviceData(deviceBrand,deviceYear,wearLevel)
+
+IRs:
+TMP_0(TestStorage.DeviceData) = new DeviceData(deviceBrand,deviceYear,wearLevel)
+dev1(TestStorage.DeviceData) := TMP_0(TestStorage.DeviceData)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+structs1[address1] = dev1
+
+IRs:
+REF_2(TestStorage.DeviceData) -> structs1[address1]
+REF_2(TestStorage.DeviceData) (->structs1) := dev1(TestStorage.DeviceData)"];
+6->7;
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+uintarray.push(8000)
+
+IRs:
+REF_4 -> LENGTH uintarray
+TMP_2(uint256) := REF_4(uint256)
+TMP_3(uint256) = TMP_2 + 1
+REF_4(uint256) (->uintarray) := TMP_3(uint256)
+REF_5(uint256) -> uintarray[TMP_2]
+REF_5(uint256) (->uintarray) := 8000(uint256)"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+uintarray.push(9000)
+
+IRs:
+REF_7 -> LENGTH uintarray
+TMP_5(uint256) := REF_7(uint256)
+TMP_6(uint256) = TMP_5 + 1
+REF_7(uint256) (->uintarray) := TMP_6(uint256)
+REF_8(uint256) -> uintarray[TMP_5]
+REF_8(uint256) (->uintarray) := 9000(uint256)"];
+8->9;
+9[label="Node Type: EXPRESSION 9
+
+EXPRESSION:
+deviceDataArray.push(dev1)
+
+IRs:
+REF_10 -> LENGTH deviceDataArray
+TMP_8(uint256) := REF_10(uint256)
+TMP_9(uint256) = TMP_8 + 1
+REF_10(uint256) (->deviceDataArray) := TMP_9(uint256)
+REF_11(TestStorage.DeviceData) -> deviceDataArray[TMP_8]
+REF_11(TestStorage.DeviceData) (->deviceDataArray) := dev1(TestStorage.DeviceData)"];
+}

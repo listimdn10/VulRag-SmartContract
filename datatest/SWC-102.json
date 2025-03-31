@@ -1,8 +1,0 @@
-{
-    "id": "SWC-102",
-    "description": [
-        "Using an outdated compiler version can be problematic especially if there are publicly disclosed bugs and issues that affect the current compiler version."
-    ],
-    "version_0_4_13.sol": "pragma solidity 0.4.13;\n\ncontract OutdatedCompilerVersion {\n uint public x = 1;\n}\n",
-    "version_0_8_20_fixed.sol": "pragma solidity ^0.8.20;\n\ncontract UpdatedCompilerVersion {\n    uint public x = 1;\n}\n"
-}

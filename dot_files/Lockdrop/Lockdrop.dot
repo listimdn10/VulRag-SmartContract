@@ -1,0 +1,447 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: INLINE ASM 1
+"];
+1->2;
+2[label="Node Type: END INLINE ASM 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+_nonce == 0x00
+
+IRs:
+TMP_23(bool) = _nonce == 0
+CONDITION TMP_23"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+address(uint160(uint256(keccak256(bytes)(abi.encodePacked(bytes1(0xd6),bytes1(0x94),_origin,bytes1(0x80))))))
+
+IRs:
+TMP_24 = CONVERT 214 to bytes1
+TMP_25 = CONVERT 148 to bytes1
+TMP_26 = CONVERT 128 to bytes1
+TMP_27(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_24,TMP_25,_origin,TMP_26)
+TMP_28(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_27)
+TMP_29 = CONVERT TMP_28 to uint256
+TMP_30 = CONVERT TMP_29 to uint160
+TMP_31 = CONVERT TMP_30 to address
+RETURN TMP_31"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+_nonce <= 0x7f
+
+IRs:
+TMP_32(bool) = _nonce <= 127
+CONDITION TMP_32"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+address(uint160(uint256(keccak256(bytes)(abi.encodePacked(bytes1(0xd6),bytes1(0x94),_origin,uint8(_nonce))))))
+
+IRs:
+TMP_33 = CONVERT 214 to bytes1
+TMP_34 = CONVERT 148 to bytes1
+TMP_35 = CONVERT _nonce to uint8
+TMP_36(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_33,TMP_34,_origin,TMP_35)
+TMP_37(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_36)
+TMP_38 = CONVERT TMP_37 to uint256
+TMP_39 = CONVERT TMP_38 to uint160
+TMP_40 = CONVERT TMP_39 to address
+RETURN TMP_40"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+_nonce <= 0xff
+
+IRs:
+TMP_41(bool) = _nonce <= 255
+CONDITION TMP_41"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+address(uint160(uint256(keccak256(bytes)(abi.encodePacked(bytes1(0xd7),bytes1(0x94),_origin,bytes1(0x81),uint8(_nonce))))))
+
+IRs:
+TMP_42 = CONVERT 215 to bytes1
+TMP_43 = CONVERT 148 to bytes1
+TMP_44 = CONVERT 129 to bytes1
+TMP_45 = CONVERT _nonce to uint8
+TMP_46(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_42,TMP_43,_origin,TMP_44,TMP_45)
+TMP_47(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_46)
+TMP_48 = CONVERT TMP_47 to uint256
+TMP_49 = CONVERT TMP_48 to uint160
+TMP_50 = CONVERT TMP_49 to address
+RETURN TMP_50"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: IF 10
+
+EXPRESSION:
+_nonce <= 0xffff
+
+IRs:
+TMP_51(bool) = _nonce <= 65535
+CONDITION TMP_51"];
+10->11[label="True"];
+10->12[label="False"];
+11[label="Node Type: RETURN 11
+
+EXPRESSION:
+address(uint160(uint256(keccak256(bytes)(abi.encodePacked(bytes1(0xd8),bytes1(0x94),_origin,bytes1(0x82),uint16(_nonce))))))
+
+IRs:
+TMP_52 = CONVERT 216 to bytes1
+TMP_53 = CONVERT 148 to bytes1
+TMP_54 = CONVERT 130 to bytes1
+TMP_55 = CONVERT _nonce to uint16
+TMP_56(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_52,TMP_53,_origin,TMP_54,TMP_55)
+TMP_57(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_56)
+TMP_58 = CONVERT TMP_57 to uint256
+TMP_59 = CONVERT TMP_58 to uint160
+TMP_60 = CONVERT TMP_59 to address
+RETURN TMP_60"];
+12[label="Node Type: END_IF 12
+"];
+12->13;
+13[label="Node Type: IF 13
+
+EXPRESSION:
+_nonce <= 0xffffff
+
+IRs:
+TMP_61(bool) = _nonce <= 16777215
+CONDITION TMP_61"];
+13->14[label="True"];
+13->15[label="False"];
+14[label="Node Type: RETURN 14
+
+EXPRESSION:
+address(uint160(uint256(keccak256(bytes)(abi.encodePacked(bytes1(0xd9),bytes1(0x94),_origin,bytes1(0x83),uint24(_nonce))))))
+
+IRs:
+TMP_62 = CONVERT 217 to bytes1
+TMP_63 = CONVERT 148 to bytes1
+TMP_64 = CONVERT 131 to bytes1
+TMP_65 = CONVERT _nonce to uint24
+TMP_66(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_62,TMP_63,_origin,TMP_64,TMP_65)
+TMP_67(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_66)
+TMP_68 = CONVERT TMP_67 to uint256
+TMP_69 = CONVERT TMP_68 to uint160
+TMP_70 = CONVERT TMP_69 to address
+RETURN TMP_70"];
+15[label="Node Type: END_IF 15
+"];
+15->16;
+16[label="Node Type: RETURN 16
+
+EXPRESSION:
+address(uint160(uint256(keccak256(bytes)(abi.encodePacked(bytes1(0xda),bytes1(0x94),_origin,bytes1(0x84),uint32(_nonce))))))
+
+IRs:
+TMP_71 = CONVERT 218 to bytes1
+TMP_72 = CONVERT 148 to bytes1
+TMP_73 = CONVERT 132 to bytes1
+TMP_74 = CONVERT _nonce to uint32
+TMP_75(bytes) = SOLIDITY_CALL abi.encodePacked()(TMP_71,TMP_72,_origin,TMP_73,TMP_74)
+TMP_76(bytes32) = SOLIDITY_CALL keccak256(bytes)(TMP_75)
+TMP_77 = CONVERT TMP_76 to uint256
+TMP_78 = CONVERT TMP_77 to uint160
+TMP_79 = CONVERT TMP_78 to address
+RETURN TMP_79"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+LOCK_START_TIME = startTime
+
+IRs:
+LOCK_START_TIME(uint256) := startTime(uint256)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+LOCK_END_TIME = startTime + LOCK_DROP_PERIOD
+
+IRs:
+TMP_0(uint256) = startTime + LOCK_DROP_PERIOD
+LOCK_END_TIME(uint256) := TMP_0(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+target == parent
+
+IRs:
+TMP_85(bool) = target == parent
+CONDITION TMP_85"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: _ 2
+"];
+2->5;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+require(bool)(target == addressFrom(parent,nonce))
+
+IRs:
+TMP_86(address) = INTERNAL_CALL, Lockdrop.addressFrom(address,uint32)(parent,nonce)
+TMP_87(bool) = target == TMP_86
+TMP_88(None) = SOLIDITY_CALL require(bool)(TMP_87)"];
+3->4;
+4[label="Node Type: _ 4
+"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now <= LOCK_END_TIME)
+
+IRs:
+TMP_83(bool) = now <= LOCK_END_TIME
+TMP_84(None) = SOLIDITY_CALL require(bool)(TMP_83)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(now >= LOCK_START_TIME)
+
+IRs:
+TMP_81(bool) = now >= LOCK_START_TIME
+TMP_82(None) = SOLIDITY_CALL require(bool)(TMP_81)"];
+1->2;
+2[label="Node Type: _ 2
+"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->7;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+eth = msg.value
+
+IRs:
+eth(uint256) := msg.value(uint256)"];
+1->2;
+2[label="Node Type: NEW VARIABLE 2
+
+EXPRESSION:
+owner = msg.sender
+
+IRs:
+owner(address) := msg.sender(address)"];
+2->3;
+3[label="Node Type: NEW VARIABLE 3
+
+EXPRESSION:
+unlockTime = unlockTimeForTerm(term)
+
+IRs:
+TMP_1(uint256) = INTERNAL_CALL, Lockdrop.unlockTimeForTerm(Lockdrop.Term)(term)
+unlockTime(uint256) := TMP_1(uint256)"];
+3->4;
+4[label="Node Type: NEW VARIABLE 4
+
+EXPRESSION:
+lockAddr = (new Lock).value(eth)(owner,unlockTime)
+
+IRs:
+TMP_4(Lock) = new Lock(owner,unlockTime) value:eth 
+lockAddr(Lock) := TMP_4(Lock)"];
+4->5;
+5[label="Node Type: EXPRESSION 5
+
+EXPRESSION:
+assert(bool)(address(lockAddr).balance == msg.value)
+
+IRs:
+TMP_5 = CONVERT lockAddr to address
+TMP_6(uint256) = SOLIDITY_CALL balance(address)(TMP_5)
+TMP_7(bool) = TMP_6 == msg.value
+TMP_8(None) = SOLIDITY_CALL assert(bool)(TMP_7)"];
+5->6;
+6[label="Node Type: EXPRESSION 6
+
+EXPRESSION:
+Locked(owner,eth,lockAddr,term,edgewareAddr,isValidator,now)
+
+IRs:
+Emit Locked(owner,eth,lockAddr,term,edgewareAddr,isValidator,now)"];
+7[label="Node Type: EXPRESSION 7
+
+EXPRESSION:
+didStart()
+
+IRs:
+MODIFIER_CALL, Lockdrop.didStart()()"];
+7->8;
+8[label="Node Type: EXPRESSION 8
+
+EXPRESSION:
+didNotEnd()
+
+IRs:
+MODIFIER_CALL, Lockdrop.didNotEnd()()"];
+8->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->2;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+Signaled(contractAddr,edgewareAddr,now)
+
+IRs:
+Emit Signaled(contractAddr,edgewareAddr,now)"];
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+didStart()
+
+IRs:
+MODIFIER_CALL, Lockdrop.didStart()()"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+didNotEnd()
+
+IRs:
+MODIFIER_CALL, Lockdrop.didNotEnd()()"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+didCreate(contractAddr,msg.sender,nonce)
+
+IRs:
+MODIFIER_CALL, Lockdrop.didCreate(address,address,uint32)(contractAddr,msg.sender,nonce)"];
+4->1;
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+LOCK_DROP_PERIOD = 86400 * 92
+
+IRs:
+TMP_80(uint256) = 86400 * 92
+LOCK_DROP_PERIOD(uint256) := TMP_80(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: IF 1
+
+EXPRESSION:
+term == Term.ThreeMo
+
+IRs:
+REF_1(Lockdrop.Term) -> Term.ThreeMo
+TMP_16(bool) = term == REF_1
+CONDITION TMP_16"];
+1->2[label="True"];
+1->3[label="False"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+now + 7948800
+
+IRs:
+TMP_17(uint256) = now + 7948800
+RETURN TMP_17"];
+3[label="Node Type: END_IF 3
+"];
+3->4;
+4[label="Node Type: IF 4
+
+EXPRESSION:
+term == Term.SixMo
+
+IRs:
+REF_2(Lockdrop.Term) -> Term.SixMo
+TMP_18(bool) = term == REF_2
+CONDITION TMP_18"];
+4->5[label="True"];
+4->6[label="False"];
+5[label="Node Type: RETURN 5
+
+EXPRESSION:
+now + 15811200
+
+IRs:
+TMP_19(uint256) = now + 15811200
+RETURN TMP_19"];
+6[label="Node Type: END_IF 6
+"];
+6->7;
+7[label="Node Type: IF 7
+
+EXPRESSION:
+term == Term.TwelveMo
+
+IRs:
+REF_3(Lockdrop.Term) -> Term.TwelveMo
+TMP_20(bool) = term == REF_3
+CONDITION TMP_20"];
+7->8[label="True"];
+7->9[label="False"];
+8[label="Node Type: RETURN 8
+
+EXPRESSION:
+now + 31536000
+
+IRs:
+TMP_21(uint256) = now + 31536000
+RETURN TMP_21"];
+9[label="Node Type: END_IF 9
+"];
+9->10;
+10[label="Node Type: EXPRESSION 10
+
+EXPRESSION:
+revert()()
+
+IRs:
+TMP_22(None) = SOLIDITY_CALL revert()()"];
+}

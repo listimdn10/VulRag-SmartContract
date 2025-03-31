@@ -1,9 +1,0 @@
-{
-    "id": "SWC-110",
-    "description": [
-        "The Solidity assert() function is meant to assert invariants. Properly functioning code should never reach a failing assert statement. A reachable assertion can mean one of two things:"
-    ],
-    "sha_of_sha_concrete.sol": "/*\n * @source: ChainSecurity\n * @author: Anton Permenev\n */\npragma solidity ^0.4.22;\n\ncontract ShaOfShaConcrete{\n\n mapping(bytes32=>uint) m;\n uint b;\n\n constructor(){\n b = 1;\n }\n\n function check(uint x){\n assert(m[keccak256(abi.encodePacked(x, \"B\"))] == 0);\n }\n\n}\n",
-    "sha_of_sha_concrete_fixed.sol": "/*\n * @source: ChainSecurity\n * @author: Anton Permenev\n * Fixed version replacing assert() with require().\n */\npragma solidity ^0.4.22;\n\ncontract ShaOfShaConcrete {\n\n    mapping(bytes32 => uint) m;\n    uint b;\n\n    constructor() public {\n        b = 1;\n    }\n\n    function check(uint x) public {\n        require(m[keccak256(abi.encodePacked(x, \"B\"))] == 0, \"Condition failed\");\n    }\n}"
-
-}

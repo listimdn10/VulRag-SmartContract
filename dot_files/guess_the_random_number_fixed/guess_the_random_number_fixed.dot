@@ -1,0 +1,110 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value == 1000000000000000000)
+
+IRs:
+TMP_5(bool) = msg.value == 1000000000000000000
+TMP_6(None) = SOLIDITY_CALL require(bool)(TMP_5)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+commitedGuess = _guess
+
+IRs:
+commitedGuess(uint8) := _guess(uint8)"];
+2->3;
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+commitBlock = block.number
+
+IRs:
+commitBlock(uint256) := block.number(uint256)"];
+3->4;
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+guesser = msg.sender
+
+IRs:
+guesser(address) := msg.sender(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(msg.value == 1000000000000000000)
+
+IRs:
+TMP_0(bool) = msg.value == 1000000000000000000
+TMP_1(None) = SOLIDITY_CALL require(bool)(TMP_0)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+address(this).balance == 0
+
+IRs:
+TMP_2 = CONVERT this to address
+TMP_3(uint256) = SOLIDITY_CALL balance(address)(TMP_2)
+TMP_4(bool) = TMP_3 == 0
+RETURN TMP_4"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool)(block.number > commitBlock + 20 && commitBlock + 20 > block.number - 256)
+
+IRs:
+TMP_7(uint256) = commitBlock + 20
+TMP_8(bool) = block.number > TMP_7
+TMP_9(uint256) = commitBlock + 20
+TMP_10(uint256) = block.number - 256
+TMP_11(bool) = TMP_9 > TMP_10
+TMP_12(bool) = TMP_8 && TMP_11
+TMP_13(None) = SOLIDITY_CALL require(bool)(TMP_12)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool)(guesser == msg.sender)
+
+IRs:
+TMP_14(bool) = guesser == msg.sender
+TMP_15(None) = SOLIDITY_CALL require(bool)(TMP_14)"];
+2->3;
+3[label="Node Type: IF 3
+
+EXPRESSION:
+uint256(blockhash(uint256)(commitBlock + 20)) == commitedGuess
+
+IRs:
+TMP_16(uint256) = commitBlock + 20
+TMP_17(uint256) = SOLIDITY_CALL blockhash(uint256)(TMP_16)
+TMP_18 = CONVERT TMP_17 to uint256
+TMP_19(bool) = TMP_18 == commitedGuess
+CONDITION TMP_19"];
+3->4[label="True"];
+3->5[label="False"];
+4[label="Node Type: EXPRESSION 4
+
+EXPRESSION:
+msg.sender.transfer(2000000000000000000)
+
+IRs:
+Transfer dest:msg.sender value:2000000000000000000"];
+4->5;
+5[label="Node Type: END_IF 5
+"];
+}

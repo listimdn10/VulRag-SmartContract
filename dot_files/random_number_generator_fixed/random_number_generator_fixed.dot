@@ -1,0 +1,130 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+vrfCoordinator = _vrfCoordinator
+
+IRs:
+vrfCoordinator(address) := _vrfCoordinator(address)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->3;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator)
+
+IRs:
+TMP_0 = CONVERT vrfCoordinator to VRFCoordinatorV2Interface
+COORDINATOR(VRFCoordinatorV2Interface) := TMP_0(VRFCoordinatorV2Interface)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+subscriptionId = _subscriptionId
+
+IRs:
+subscriptionId(uint64) := _subscriptionId(uint64)"];
+3[label="Node Type: EXPRESSION 3
+
+EXPRESSION:
+VRFConsumerBaseV2(vrfCoordinator)
+
+IRs:
+INTERNAL_CALL, VRFConsumerBaseV2.constructor(address)(vrfCoordinator)"];
+3->1;
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+randomResult = randomWords[0]
+
+IRs:
+REF_1(uint256) -> randomWords[0]
+randomResult(uint256) := REF_1(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(randomResult > 0,Random number not generated yet)
+
+IRs:
+TMP_3(bool) = randomResult > 0
+TMP_4(None) = SOLIDITY_CALL require(bool,string)(TMP_3,Random number not generated yet)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+(randomResult % max) + 1
+
+IRs:
+TMP_5(uint256) = randomResult % max
+TMP_6(uint256) = TMP_5 (c)+ 1
+RETURN TMP_6"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+COORDINATOR.requestRandomWords(keyHash,subscriptionId,requestConfirmations,callbackGasLimit,numWords)
+
+IRs:
+TMP_2(uint256) = HIGH_LEVEL_CALL, dest:COORDINATOR(VRFCoordinatorV2Interface), function:requestRandomWords, arguments:['keyHash', 'subscriptionId', 'requestConfirmations', 'callbackGasLimit', 'numWords']  "];
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+vrfCoordinator = 0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625
+
+IRs:
+vrfCoordinator(address) := 736542100814370719003330277217658782188674893349(address)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+keyHash = 0x6c3699283bda56ad74f6b855546325b68d482e983852a3a5bde69e3ea85e90b3
+
+IRs:
+keyHash(bytes32) := 48946254440382972832698805719512371851335635566567336452645420954950968447155(uint256)"];
+1->2;
+2[label="Node Type: OTHER_ENTRYPOINT 2
+
+EXPRESSION:
+requestConfirmations = 3
+
+IRs:
+requestConfirmations(uint16) := 3(uint256)"];
+2->3;
+3[label="Node Type: OTHER_ENTRYPOINT 3
+
+EXPRESSION:
+callbackGasLimit = 100000
+
+IRs:
+callbackGasLimit(uint32) := 100000(uint256)"];
+3->4;
+4[label="Node Type: OTHER_ENTRYPOINT 4
+
+EXPRESSION:
+numWords = 1
+
+IRs:
+numWords(uint32) := 1(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+vrfCoordinator = _vrfCoordinator
+
+IRs:
+vrfCoordinator(address) := _vrfCoordinator(address)"];
+}

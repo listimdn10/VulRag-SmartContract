@@ -1,0 +1,14 @@
+swc103 gặp lỗi vì solc version k khả dụg
+swc 105 lỗi vì viết sai chính tả 
+
+106 chưa done
+
+114b lỗi slither : Defining constructors as functions with the same name as the contract is deprecated. Use "constructor(...) { ... }" instead.
+
+110p lỗi k có fixed
+
+132 k ra
+
+116 chưa tách
+
+113a và b có import thư viện ngoài

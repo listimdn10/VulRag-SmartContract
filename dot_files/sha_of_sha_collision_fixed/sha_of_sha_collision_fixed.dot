@@ -1,0 +1,29 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+require(bool,string)(m[keccak256()(abi.encodePacked(x,B))] == 0,Condition failed)
+
+IRs:
+TMP_2(bytes) = SOLIDITY_CALL abi.encodePacked()(x,B)
+TMP_3(bytes32) = SOLIDITY_CALL keccak256()(TMP_2)
+REF_3(uint256) -> m[TMP_3]
+TMP_4(bool) = REF_3 == 0
+TMP_5(None) = SOLIDITY_CALL require(bool,string)(TMP_4,Condition failed)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+m[keccak256()(abi.encodePacked(A,x))] = 1
+
+IRs:
+TMP_0(bytes) = SOLIDITY_CALL abi.encodePacked()(A,x)
+TMP_1(bytes32) = SOLIDITY_CALL keccak256()(TMP_0)
+REF_1(uint256) -> m[TMP_1]
+REF_1(uint256) (->m) := 1(uint256)"];
+}

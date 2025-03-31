@@ -1,0 +1,43 @@
+digraph CFG {
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+x_ = x
+
+IRs:
+x_(uint256) := x(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+x_
+
+IRs:
+RETURN x_"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+b = new B(x)
+
+IRs:
+TMP_1(B) = new B(x) 
+b(B) := TMP_1(B)"];
+1->2;
+2[label="Node Type: EXPRESSION 2
+
+EXPRESSION:
+require(bool,string)(b.foo() == 10,Value must be 10!)
+
+IRs:
+TMP_2(uint256) = HIGH_LEVEL_CALL, dest:b(B), function:foo, arguments:[]  
+TMP_3(bool) = TMP_2 == 10
+TMP_4(None) = SOLIDITY_CALL require(bool,string)(TMP_3,Value must be 10!)"];
+}

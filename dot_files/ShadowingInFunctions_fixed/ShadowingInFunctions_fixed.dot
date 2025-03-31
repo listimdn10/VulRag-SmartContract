@@ -1,0 +1,85 @@
+digraph CFG {
+0[label="Node Type: OTHER_ENTRYPOINT 0
+
+EXPRESSION:
+n = 2
+
+IRs:
+n(uint256) := 2(uint256)"];
+0->1;
+1[label="Node Type: OTHER_ENTRYPOINT 1
+
+EXPRESSION:
+x = 3
+
+IRs:
+x(uint256) := 3(uint256)"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: RETURN 1
+
+EXPRESSION:
+n
+
+IRs:
+RETURN n"];
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: EXPRESSION 1
+
+EXPRESSION:
+result = 1
+
+IRs:
+result(uint256) := 1(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+0[label="Node Type: ENTRY_POINT 0
+"];
+0->1;
+1[label="Node Type: NEW VARIABLE 1
+
+EXPRESSION:
+localN = 4
+
+IRs:
+localN(uint256) := 4(uint256)"];
+1->2;
+2[label="Node Type: RETURN 2
+
+EXPRESSION:
+localN + x
+
+IRs:
+TMP_0(uint256) = localN + x
+RETURN TMP_0"];
+3[label="Node Type: RETURN 3
+
+EXPRESSION:
+result
+
+IRs:
+RETURN result"];
+}
